@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0035)http://www.intelplay.com/bottom.htm -->
+<HTML><HEAD><TITLE>Intel(r) Play(tm)</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1252">
+<SCRIPT language=JavaScript1.1>
+      <!--//
+      //  awards images named here
+      bottombut1 = new Image();
+      bottombut1.src = "images/awardsbttn.jpg";
+      bottombut1h = new Image();
+      bottombut1h.src = "images/awardsbttn_over.jpg";
+
+      function swapImage(imgDocID,imgObjName) {
+      //  NOTE - different function name!
+      //  manages mouse click image behaviours
+      //  imgDocID - the name or number of the document image to be replaced
+      //  imgObjName - the name of the image object to be swapped in
+
+      {
+      document.images[imgDocID].src = eval(imgObjName + ".src");
+      }
+
+      }
+      // -->
+    </SCRIPT>
+
+<SCRIPT language=JavaScript>
+      <!--
+      function openWindow(theURL,winName,features) {
+      window.open(theURL,winName,features);
+      }
+      //-->
+    </SCRIPT>
+
+<META content="MSHTML 5.50.4134.600" name=GENERATOR></HEAD>
+<BODY bgColor=#ff9933>
+<FORM name=voteForm action=vote.php3 method=post><? // This is where we set the id of the voting topic... ?><INPUT 
+type=hidden value=1 name=vote_id> 
+<TABLE cellSpacing=0 cellPadding=0 width=620 border=0>
+  <TBODY>
+  <TR>
+    <TD rowSpan=2><IMG height=8 alt="" src="bottom_files/pxlclr.gif" width=1 
+      border=0><BR><A onmouseover="swapImage('bottomimage1','bottombut1h')" 
+      onclick="openWindow('awards.htm','windowawards','scrollbars=no,resizable=yes,width=500,height=320')" 
+      onmouseout="swapImage('bottomimage1','bottombut1')" 
+      href="http://www.intelplay.com/bottom.htm#"></A><IMG height=67 
+      alt="QX3(tm) Awards and Reviews" src="bottom_files/awardsbttn.jpg" 
+      width=215 border=0 name=bottomimage1></TD>
+    <TD noWrap rowSpan=2><IMG alt="Figure this out!" 
+      src="bottom_files/picture_3pepper.gif" border=0></TD>
+    <TD noWrap><IMG height=6 alt="" src="bottom_files/pxlclr.gif" width=1 
+      border=0><BR><IMG height=1 alt="" src="bottom_files/pxlclr.gif" width=10 
+      border=0><INPUT type=radio value=1 name=frmVote> <IMG alt="" 
+      src="bottom_files/option1_3hot.gif" align=absMiddle border=0><INPUT 
+      type=radio value=2 name=frmVote> <IMG alt="" 
+      src="bottom_files/option2_3not.gif" align=absMiddle border=0></TD>
+    <TD noWrap align=right rowSpan=2><IMG height=8 alt="" 
+      src="bottom_files/pxlclr.gif" width=48 border=0></TD></TR>
+  <TR>
+    <TD align=middle><A 
+      onmouseover="window.status='Click here to cast your vote!';" 
+      href="javascript:document.voteForm.submit();"><IMG height=34 alt=Vote! 
+      src="bottom_files/vote.gif" width=60 
+border=0></A></TD></TR></TBODY></TABLE></FORM></BODY></HTML>
