@@ -1,118 +1,449 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
-	
-	<title>Subutai Ahmad</title>
-	<meta http-equiv="pragma" content="no-cache">
-	<meta name="robots" content="all">
-	<meta name="MSSmartTagsPreventParsing" content="true">
-	<meta http-equiv="imagetoolbar" content="false">
-	<style>
-	* { padding: 0; margin: 0; }
-	p { color: #000; font-family: Helvetica; font-size: 80%; line-height: 20px; margin-bottom: 15px; -webkit-font-smoothing: antialiased; }
-	#credit {font-size: 50%; margin-left: 45px; }
-	#about a { color: #f11; font-weight: bold; text-decoration: none; border-bottom: 0px solid rgb(15, 58, 45); }
-	#about a:hover { text-decoration: none; color: #f88; border-bottom: 1px solid rgb(15, 58, 45); text-shadow: none; }
-	#logo { width: 50px; margin: 0; position: fixed; right: 50px; top: 50px;}
-	#about { width: 400px; padding: 50px 0 0 30px; margin: 0 auto 0 50px !important;}
-	h1 {font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-weight: 300; margin-bottom: 20px; line-height: 130%; color: #000; text-shadow: none;}
-	ul#connect{white-space:nowrap;width: 400px; padding: 10px 0 0 20px; margin: 0 auto 0 50px !important;}
-	#connect li{display:inline;list-style-type:none;}
-	#connect a{text-decoration: none;padding:3px 5px;border-style: none;}
-	#connect a:link,#navlist a:visited{text-decoration: none;opacity:0.7;border-style: none;}
-	#connect a:hover{text-decoration: none;opacity:0.8;border-style: none;}
-	#connect img {border:none;}
-	span{color:#333;}
-	</style>
-<!--[if IE]>
-<meta http-equiv="refresh" content="0;url=http://www.subutai.com/">
-<![endif]-->
-<script type="text/javascript" async="" src="./other/ga.js"></script><script type="text/javascript">
-
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-1129143-2']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>	
-</head>	
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subutai Ahmad - Researcher & Entrepreneur</title>
+    <meta name="description" content="Subutai Ahmad: VP Research at Numenta, computational neuroscience researcher, machine learning expert, and serial entrepreneur">
+    <meta name="keywords" content="Subutai Ahmad, Numenta, HTM, computational neuroscience, machine learning, entrepreneur">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
     
+    <!-- Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-1129143-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-1129143-2');
+    </script>
+</head>
 <body>
-	<script type="text/javascript" src="./js/jquery-1.4.2.min.js"></script>
-	<script type="text/javascript" src="./js/jquery.backstretch.js"></script>
-	<div id="backstretch" style="left: 0px; top: 0px; position: fixed; overflow: hidden; z-index: -9999; ">
-		<script type="text/javascript">
-			$.backstretch("images/Subutai_nta4.jpg", {speed: 950});
-		</script>
-	</div>
-    <div id="about">
-      <h1>Subutai Ahmad: researcher, software technologist, entrepreneur</h1>
-      
-      <p>
-	 Hello, and welcome to my web site! I am a researcher in computational neuroscience and
-		  machine learning, and a software technologist
-	 living in Palo Alto with my wife, three kids, and a dog.
-	 I am currently VP Research at <a href="http://numenta.com">Numenta</a>. 
-      </p>
-      
-      <p>
-	<b>Research:</b>  My current research interests are focused around creating a detailed theory of the neocortex, and
-	applying its concepts to machine learning. You can check out <a
-	href="https://numenta.com/machine-intelligence-research">this page at Numenta</a>, <a
-	href="https://numenta.com/neuroscience-research/">this page</a>, or <a
-	href="https://hai.stanford.edu/events/hai-weekly-seminar-subutai-ahmad-sparsity-neocortex-and-its-implications-machine-learning">a
-	recent talk</a> for a more in-depth sense of my current research. 	This link contains <a href="my_refs.html">a
-	list of my publications</a> although my <a
-	href="https://scholar.google.com/citations?user=15vzrCoAAAAJ&hl=en">Google scholar page</a> is usually more up to
-	date.  </p>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="#home">Subutai Ahmad</a>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#research" class="nav-link">Research</a>
+                <a href="#entrepreneurship" class="nav-link">Entrepreneurship</a>
+                <a href="#papers" class="nav-link">Featured Papers</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+            <div class="nav-toggle" id="nav-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
 
-		<p>In the past, I have done research more generally in
-	machine learning, computer vision, video, and speed optimization.  I am also passionate about startups
-	and productizing cool technology. Although I've been pseudo-successful at this, I've learned that this is all much
-	tougher than it sounds. Particularly when you insist on "cool technology"!
-      </p>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-background">
+            <img src="images/Subutai_nta4.jpg" alt="Subutai Ahmad" class="hero-image">
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="hero-content">
+            <div class="container">
+                <h1 class="hero-title">Subutai Ahmad</h1>
+                <p class="hero-subtitle">Researcher • Technologist • Entrepreneur</p>
+                <p class="hero-description">
+                    CTO at Numenta, exploring the mysteries of the neocortex and 
+                    applying its principles to create intelligent machines
+                </p>
+                <div class="hero-cta">
+                    <a href="#research" class="btn btn-primary">Research</a>
+                    <a href="#entrepreneurship" class="btn btn-secondary">Products/Startups</a>
+                </div>
+            </div>
+        </div>
+    </section>
 
-      <p><b>Education:</b> I discovered my passion for computers early on. I taught
-	 myself programming when I was 11. I attended <a
-	 href="http://www.cornell.edu/">Cornell University</a>, graduating with
-	 a degree in Computer Science. I later went on to get a Masters and PhD,
-	 specializing in machine learning and computational neuroscience, from
-	 the University of Illinois at Urbana-Champaign. I became
-	 fascinated by the brain and reverse engineering its code. I couldn't
-	 imagine a more complex or fascinating program to write. 
-      </p>
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>About</h2>
+                    <p>
+                        I am a researcher in computational neuroscience and machine learning, and a software 
+                        technologist living in Palo Alto with my wife, three kids, and a dog. Currently serving 
+                        as CTO at <a href="https://numenta.com" target="_blank">Numenta</a>, I'm passionate 
+                        about understanding how the brain works and translating those insights into practical 
+                        machine learning applications.
+                    </p>
+                    <p>
+                        My journey spans both academic research and entrepreneurial ventures, from co-founding 
+                        computer vision startups to developing theories in neuroscience. 
+                        I believe the key to artificial intelligence lies in understanding the elegant algorithms 
+                        of the neocortex.
+                    </p>
+                    <p>
+                        <strong>Education:</strong> I discovered my passion for computers early on, teaching myself 
+                        programming at age 11. I graduated from <a href="http://www.cornell.edu/" target="_blank">Cornell University</a> 
+                        with a degree in Computer Science, then earned my Masters and PhD in machine learning and 
+                        computational neuroscience from the University of Illinois at Urbana-Champaign. I did my
+                        PhD research at University of California, Berkeley at the International Computer Science Institute as
+                        a visiting research assistant. My Master's thesis advisor was <a href="https://en.wikipedia.org/wiki/Gerald_Tesauro" target="_blank">Gerald Tesauro</a>, and my PhD advisor
+                        was <a href="https://en.wikipedia.org/wiki/Steve_Omohundro" target="_blank">Steve Omohundro</a>.
+                    </p>
+                    <div class="about-stats">
+                        <div class="stat">
+                            <span class="stat-number">25+</span>
+                            <span class="stat-label">Years Experience</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">50+</span>
+                            <span class="stat-label">Publications</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">4</span>
+                            <span class="stat-label">Companies Founded</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <img src="images/subutai_trs80.jpg" alt="Subutai Ahmad">
+                </div>
+            </div>
+        </div>
+    </section>
 
-      <p>
-	<b>Misc:</b>Here's more detailed information about my <a href="about2.html">past
-	companies</a>. You can also look me up on <a
-	href="http://www.linkedin.com/in/subutai">LinkedIn</a>. 
-	
-      
-    </div>
-    
-    <ul id="connect">
-    <li>
-    <a href="https://twitter.com/SubutaiAhmad" class="twitter-follow-button" data-show-count="false">
-    Follow @SubutaiAhmad</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-    </li>
-<!-- 
-    <li><a href="http://www.facebook.com/subutai.ahmad"><img src="./images/facebook-logo.png"></a></li>
- -->
-    </ul>
+    <!-- Research Section -->
+    <section id="research" class="research">
+        <div class="container">
+            <div class="section-header">
+                <h2>Research Contributions</h2>
+                <p>Advancing our understanding of intelligence through computational neuroscience</p>
+            </div>
+            
+            <div class="research-areas">
+                <div class="research-card">
+                    <div class="research-icon">🧠</div>
+                    <h3>Hierarchical Temporal Memory</h3>
+                    <p>
+                        Developing HTM theory as a comprehensive framework for understanding 
+                        neocortical computation, focusing on sequence learning, sparse representations, 
+                        and temporal memory.
+                    </p>
+                    <div class="research-links">
+                        <a href="https://numenta.com/machine-intelligence-research" target="_blank">Learn More</a>
+                    </div>
+                </div>
+                
+                <div class="research-card">
+                    <div class="research-icon">🔬</div>
+                    <h3>Computational Neuroscience</h3>
+                    <p>
+                        Investigating the mathematical principles underlying neocortical function, 
+                        including sparsity, active dendrites, and cortical columns.
+                    </p>
+                    <div class="research-links">
+                        <a href="https://numenta.com/neuroscience-research/" target="_blank">Explore Research</a>
+                    </div>
+                </div>
+                
+                <div class="research-card">
+                    <div class="research-icon">🤖</div>
+                    <h3>Machine Learning Applications</h3>
+                    <p>
+                        Translating neuroscience insights into practical ML algorithms for 
+                        anomaly detection, sequence prediction, and continual learning.
+                    </p>
+                    <div class="research-links">
+                        <a href="https://scholar.google.com/citations?user=15vzrCoAAAAJ&hl=en" target="_blank">Publications</a>
+                    </div>
+                </div>
 
-    <div id="connect1">
-	</div>
-    <p></p>
+                <div class="research-card">
+                    <div class="research-icon">👁️</div>
+                    <h3>Computer Vision</h3>
+                    <p>
+                        Early pioneering work in real-time computer vision systems, including 
+                        hand tracking and gesture recognition applications that preceded modern 
+                        motion control interfaces by over a decade.
+                    </p>
+                    <div class="research-links">
+                        <a href="asilomar94.pdf" target="_blank">Key Paper</a>
+                        <a href="https://youtu.be/qDLIjKKiNbI?t=325" target="_blank">Demo Video</a>
+                    </div>
+                </div>
+            </div>
 
-    <div id = "credit">
-    <p>Page credit goes to <a href="http://weightshift.com/memo/the-personal-page">Naz Hamid</a>
-       for the original design (available
-       <a href="https://github.com/weightshift/The-Personal-Page">here on github</a>), and
-       <a href="http://timlum.com/">Tim Lum</a> for this variation.</p>
-    </div>
-	
-</body></html>
+            <div class="research-timeline">
+                <h3>Research Evolution</h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-year">2005-Present</div>
+                        <div class="timeline-content">
+                            <h4>Numenta Research</h4>
+                            <p>Leading research into HTM theory and its applications to machine intelligence</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">1993-1997</div>
+                        <div class="timeline-content">
+                            <h4>Interval Research</h4>
+                            <p>Pioneering work in computer vision, DVR technology, and human-computer interaction</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">1991-1993</div>
+                        <div class="timeline-content">
+                            <h4>Siemens Central Research</h4>
+                            <p>Developed real-time computer vision hand-tracking systems</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Entrepreneurship Section -->
+    <section id="entrepreneurship" class="entrepreneurship">
+        <div class="container">
+            <div class="section-header">
+                <h2>Entrepreneurial Journey</h2>
+                <p>Transforming cutting-edge research into impactful products and companies</p>
+            </div>
+            
+            <div class="ventures-grid">
+                <div class="venture-card featured">
+                    <div class="venture-header">
+                        <h3>Numenta</h3>
+                        <span class="venture-role">VP Research (2005-Present)</span>
+                        <span class="venture-years">2005 - Present</span>
+                    </div>
+                    <div class="venture-content">
+                        <p>
+                            Leading the research team at Numenta, developing Hierarchical Temporal Memory (HTM) 
+                            theory and its applications. Previously served as VP Engineering (2005-2014), 
+                            building the foundational technology and team.
+                        </p>
+                        <div class="venture-achievements">
+                            <span class="achievement">HTM Theory Development</span>
+                            <span class="achievement">Open Source NuPIC</span>
+                            <span class="achievement">50+ Research Papers</span>
+                        </div>
+                        <a href="https://numenta.com" target="_blank" class="venture-link">Visit Numenta →</a>
+                    </div>
+                </div>
+
+                <div class="venture-card">
+                    <div class="venture-header">
+                        <h3>YesVideo</h3>
+                        <span class="venture-role">Senior Engineer</span>
+                        <span class="venture-years">1999 - 2005</span>
+                    </div>
+                    <div class="venture-content">
+                        <p>
+                            Developed automated digital media authoring technology, making it easy for 
+                            consumers to access their precious memories through partnerships with 
+                            Kodak and Fujicolor Services.
+                        </p>
+                        <div class="venture-achievements">
+                            <span class="achievement">30,000+ Store Locations</span>
+                            <span class="achievement">Video Processing Pipeline</span>
+                            <span class="achievement">Consumer Scale Impact</span>
+                        </div>
+                        <a href="https://www.yesvideo.com" target="_blank" class="venture-link">Learn More →</a>
+                    </div>
+                </div>
+
+                <div class="venture-card">
+                    <div class="venture-header">
+                        <h3>ePlanet</h3>
+                        <span class="venture-role">Co-Founder</span>
+                        <span class="venture-years">1997 - 1999</span>
+                    </div>
+                    <div class="venture-content">
+                        <p>
+                            Co-founded with Meg Withgott and John Levy as an Interval Research spin-off. 
+                            Created the first consumer computer vision application - like Kinect, 
+                            but 10 years earlier.
+                        </p>
+                        <div class="venture-achievements">
+                            <span class="achievement">First Consumer CV App</span>
+                            <span class="achievement">Interval Research Spinoff</span>
+                            <span class="achievement">Ahead of Its Time</span>
+                        </div>
+                        <a href="ep.html" class="venture-link">View Details →</a>
+                    </div>
+                </div>
+
+                <div class="venture-card">
+                    <div class="venture-header">
+                        <h3>Interval Research</h3>
+                        <span class="venture-role">Researcher</span>
+                        <span class="venture-years">1993 - 1997</span>
+                    </div>
+                    <div class="venture-content">
+                        <p>
+                            Researcher at Paul Allen and David Liddle's visionary lab. Created one of 
+                            the first working DVRs focused on TV news indexing and developed 
+                            foundational computer vision technologies.
+                        </p>
+                        <div class="venture-achievements">
+                            <span class="achievement">First DVR Prototype</span>
+                            <span class="achievement">News Indexing System</span>
+                            <span class="achievement">Key Patents</span>
+                        </div>
+                        <a href="https://en.wikipedia.org/wiki/Interval_Research_Corporation" target="_blank" class="venture-link">About Interval →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Papers Section -->
+    <section id="papers" class="papers">
+        <div class="container">
+            <div class="section-header">
+                <h2>Featured Publications</h2>
+                <p>Key research contributions that have shaped the field</p>
+            </div>
+            
+            <div class="papers-grid">
+                <div class="paper-card featured">
+                    <div class="paper-badge">Most Cited</div>
+                    <h3>Why Neurons Have Thousands of Synapses, A Theory of Sequence Memory in Neocortex</h3>
+                    <div class="paper-authors">Jeff Hawkins and Subutai Ahmad</div>
+                    <div class="paper-venue">Frontiers in Neural Circuits, 2016</div>
+                    <div class="paper-abstract">
+                        <p>
+                            We propose that pyramidal neurons in the neocortex learn sequences by integrating 
+                            input over time through active dendrites and NMDA spikes. This theory explains 
+                            why neurons have thousands of synapses and provides a framework for understanding 
+                            sequence memory in cortical networks.
+                        </p>
+                    </div>
+                    <div class="paper-metrics">
+                        <span class="metric">
+                            <strong>Citations:</strong> 150+
+                        </span>
+                        <span class="metric">
+                            <strong>Impact:</strong> High
+                        </span>
+                    </div>
+                    <div class="paper-links">
+                        <a href="http://bit.ly/1pTsNYc" target="_blank" class="btn btn-primary">Read Paper</a>
+                    </div>
+                </div>
+
+                <div class="paper-card">
+                    <h3>How do neurons operate on sparse distributed representations?</h3>
+                    <div class="paper-authors">Subutai Ahmad and Jeff Hawkins</div>
+                    <div class="paper-venue">arXiv preprint, 2016</div>
+                    <div class="paper-abstract">
+                        <p>
+                            A mathematical theory of sparsity, neurons and active dendrites that explains 
+                            how individual neurons can recognize hundreds of unique patterns and how 
+                            networks of such neurons can perform robust computation.
+                        </p>
+                    </div>
+                    <div class="paper-links">
+                        <a href="http://arxiv.org/abs/1601.00720" target="_blank" class="btn btn-primary">Read Paper</a>
+                    </div>
+                </div>
+
+                <div class="paper-card">
+                    <h3>Properties of Sparse Distributed Representations and their Application to HTM</h3>
+                    <div class="paper-authors">Subutai Ahmad and Jeff Hawkins</div>
+                    <div class="paper-venue">arXiv preprint, 2015</div>
+                    <div class="paper-abstract">
+                        <p>
+                            Theoretical analysis of sparse distributed representations (SDRs) and their 
+                            mathematical properties, demonstrating their computational advantages for 
+                            learning and memory in neural networks.
+                        </p>
+                    </div>
+                    <div class="paper-links">
+                        <a href="http://arxiv.org/abs/1503.07469" target="_blank" class="btn btn-primary">Read Paper</a>
+                    </div>
+                </div>
+
+                <div class="paper-card">
+                    <h3>Evaluating Real-time Anomaly Detection Algorithms</h3>
+                    <div class="paper-authors">Alex Lavin and Subutai Ahmad</div>
+                    <div class="paper-venue">IEEE ICMLA, 2015</div>
+                    <div class="paper-abstract">
+                        <p>
+                            Introduction of the Numenta Anomaly Benchmark (NAB), a comprehensive 
+                            evaluation framework for real-time anomaly detection algorithms with 
+                            labeled real-world datasets.
+                        </p>
+                    </div>
+                    <div class="paper-links">
+                        <a href="http://arxiv.org/abs/1510.03336" target="_blank" class="btn btn-primary">Read Paper</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="papers-cta">
+                <p>Explore my complete publication list</p>
+                <a href="my_refs.html" class="btn btn-primary">View All Publications</a>
+                <a href="https://scholar.google.com/citations?user=15vzrCoAAAAJ&hl=en" target="_blank" class="btn btn-secondary">Google Scholar</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h2>Get In Touch</h2>
+                    <p>
+                        Interested in collaboration, speaking opportunities, or discussing 
+                        the future of artificial intelligence? I'd love to hear from you.
+                    </p>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <strong>Email:</strong>
+                            <a href="mailto:me@subutai.com">me@subutai.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <strong>Location:</strong>
+                            Palo Alto, California
+                        </div>
+                    </div>
+                </div>
+                <div class="social-links">
+                    <a href="https://twitter.com/SubutaiAhmad" target="_blank" class="social-link">
+                        <span>Twitter</span>
+                    </a>
+                    <a href="https://www.linkedin.com/in/subutai" target="_blank" class="social-link">
+                        <span>LinkedIn</span>
+                    </a>
+                    <a href="https://scholar.google.com/citations?user=15vzrCoAAAAJ&hl=en" target="_blank" class="social-link">
+                        <span>Google Scholar</span>
+                    </a>
+                    <a href="https://github.com/subutai" target="_blank" class="social-link">
+                        <span>GitHub</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2024 Subutai Ahmad. All rights reserved.</p>
+                <p>
+                    Design inspired by <a href="http://weightshift.com/memo/the-personal-page" target="_blank">Naz Hamid</a> 
+                    and <a href="http://timlum.com/" target="_blank">Tim Lum</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
