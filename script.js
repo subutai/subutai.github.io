@@ -1,7 +1,7 @@
 // Modern JavaScript for Subutai Ahmad's Website
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Navigation functionality
+    // Navigation functionality (navigation is loaded by navigation.js)
     initNavigation();
     
     // Smooth scrolling for anchor links

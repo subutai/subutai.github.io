@@ -754,9 +754,10 @@ section {
 }
 
 .social-links {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    justify-content: center;
     gap: 1rem;
+    flex-wrap: wrap;
 }
 
 .social-link {
@@ -928,7 +929,8 @@ section {
     }
 
     .social-links {
-        grid-template-columns: 1fr;
+        flex-direction: column;
+        align-items: center;
     }
 }
 
