@@ -156,8 +156,8 @@ a:hover {
     top: 50%;
     right: 5%;
     transform: translateY(-50%);
-    width: 35%;
-    max-width: 400px;
+    width: 44%;
+    max-width: 500px;
     z-index: 1;
     border-radius: 12px;
     overflow: hidden;
@@ -180,8 +180,8 @@ a:hover {
     text-align: left;
     color: #1a1a1a;
     z-index: 2;
-    width: 55%;
-    max-width: 800px;
+    width: 45%;
+    max-width: 600px;
     padding: 0 2rem;
     margin-right: auto;
 }
