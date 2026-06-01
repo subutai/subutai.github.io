@@ -1,0 +1,286 @@
+<!-- Career journey — one section per place I've worked. Content comes from
+     career.js (shared with the homepage list). Links like career.html#numenta
+     jump to that place's section. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Career — Subutai Ahmad</title>
+<meta name="description" content="Subutai Ahmad's career journey — Numenta, YesVideo, ePlanet, and Interval Research: the labs and startups behind the research.">
+<meta name="author" content="Subutai Ahmad">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Subutai Ahmad">
+<meta property="og:title" content="Career — Subutai Ahmad">
+<meta property="og:description" content="The labs and startups behind the research — Numenta, YesVideo, ePlanet, Interval Research.">
+<meta property="og:url" content="https://subutai.me/career.html">
+<meta property="og:image" content="https://subutai.me/images/Subutai_nta4.jpg">
+<meta property="og:image:alt" content="Subutai Ahmad">
+
+<!-- Twitter / X card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Career — Subutai Ahmad">
+<meta name="twitter:description" content="The labs and startups behind the research — Numenta, YesVideo, ePlanet, Interval Research.">
+<meta name="twitter:image" content="https://subutai.me/images/Subutai_nta4.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --paper:    #faf8f3;
+    --paper2:   #f3f0e8;
+    --ink:      #2d2a24;
+    --ink-soft: #6b6357;
+    --rule:     #d9d3c6;
+    --accent:   #e07a5f;
+    --accent-light: #fdf0ec;
+    --max: 820px;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Nunito', sans-serif;
+    font-size: 17px;
+    line-height: 1.7;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .dotted-rule { border: none; border-top: 2px dotted var(--rule); margin: 0; }
+
+  /* ── site nav strip ─────────────────────────────────────────── */
+  .site-nav {
+    background: rgba(250,248,243,.95);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px dotted var(--rule);
+    padding: 0 24px;
+    position: sticky; top: 0; z-index: 50;
+  }
+  .site-nav-inner {
+    max-width: var(--max); margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 0; gap: 16px;
+  }
+  .back-link { font-size: 13px; font-weight: 700; color: var(--ink-soft); display: flex; align-items: center; gap: 5px; }
+  .back-link:hover { color: var(--accent); text-decoration: none; }
+  .back-arrow { font-size: 16px; line-height: 1; }
+  .site-name { font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 300; color: var(--ink-soft); }
+
+  /* ── company pill sub-nav ───────────────────────────────────── */
+  .career-nav {
+    background: var(--paper2);
+    border-bottom: 1px dotted var(--rule);
+    overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+  }
+  .career-nav::-webkit-scrollbar { display: none; }
+  .career-nav-inner {
+    max-width: var(--max); margin: 0 auto;
+    display: flex; gap: 6px; padding: 10px 24px; white-space: nowrap;
+  }
+  .career-pill {
+    font-size: 12px; font-weight: 700;
+    padding: 4px 13px; border-radius: 20px;
+    border: 1.5px solid var(--rule); background: white; color: var(--ink-soft);
+    text-decoration: none; white-space: nowrap;
+    transition: border-color .15s, color .15s;
+  }
+  .career-pill:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+
+  /* ── layout ─────────────────────────────────────────────────── */
+  .page-wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+
+  .career-header { padding: 52px 0 30px; border-bottom: 1px dotted var(--rule); }
+  .career-label {
+    font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 8px;
+  }
+  .career-title {
+    font-family: 'Fraunces', serif; font-size: clamp(1.9rem, 5vw, 2.9rem);
+    font-weight: 400; line-height: 1.12; color: var(--ink); margin-bottom: 14px;
+  }
+  .career-intro { color: var(--ink-soft); max-width: 600px; }
+
+  /* ── one section per place ──────────────────────────────────── */
+  .career-section {
+    padding: 40px 0;
+    border-bottom: 1px dotted var(--rule);
+    scroll-margin-top: 72px;            /* so the sticky nav doesn't cover the heading */
+  }
+  .cs-dates {
+    font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 700;
+    letter-spacing: .08em; text-transform: uppercase; color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .cs-company {
+    font-family: 'Fraunces', serif; font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 400; color: var(--ink); line-height: 1.15;
+  }
+  .cs-role {
+    font-family: 'Fraunces', serif; font-style: italic; font-weight: 300;
+    font-size: 1.05rem; color: var(--ink-soft); margin: 4px 0 18px;
+  }
+  .cs-body { border-left: 3px solid var(--accent); padding-left: 20px; }
+  .cs-body p { color: var(--ink-soft); margin-bottom: 16px; max-width: 620px; font-size: 1rem; }
+  .cs-body p:last-child { margin-bottom: 0; }
+  .cs-highlights { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 18px; }
+  .chip {
+    background: var(--accent-light); color: var(--ink-soft);
+    border-radius: 20px; padding: 3px 11px; font-size: 12px; font-weight: 600;
+  }
+  .visit {
+    display: inline-block; margin-top: 18px;
+    font-size: 13px; font-weight: 700; color: var(--ink-soft);
+    padding: 6px 14px; border: 1px solid var(--rule); border-radius: 20px; background: white;
+    transition: border-color .15s, color .15s;
+  }
+  .visit:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+
+  /* ── per-section image (placeholder until you add a file) ───── */
+  .career-media { margin: 18px 0 4px; }
+  .career-figure { margin: 0; }
+  .career-figure img { width: 100%; border-radius: 10px; display: block; box-shadow: 0 6px 22px rgba(0,0,0,.1); }
+  .career-figure figcaption { font-size: 12px; color: var(--ink-soft); font-style: italic; text-align: center; margin-top: 8px; }
+  .fig-placeholder {
+    border: 1.5px dashed var(--accent);
+    background: var(--accent-light);
+    border-radius: 10px;
+    min-height: 150px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 22px; gap: 5px;
+  }
+  .fig-placeholder .fig-ic   { font-size: 24px; opacity: .65; }
+  .fig-placeholder .fig-main { font-weight: 700; color: var(--accent); font-size: 14px; }
+  .fig-placeholder .fig-sub  { font-size: 12px; color: var(--ink-soft); max-width: 440px; }
+  .fig-placeholder code {
+    font-family: ui-monospace, Menlo, monospace; font-size: 11px;
+    background: rgba(0,0,0,.05); padding: 1px 6px; border-radius: 4px;
+  }
+
+  /* ── footer ─────────────────────────────────────────────────── */
+  footer { background: var(--paper); border-top: 1px dotted var(--rule); padding: 28px 24px; text-align: center; }
+  footer a { font-size: 13px; font-weight: 700; color: var(--ink-soft); }
+  footer a:hover { color: var(--accent); }
+
+  @media (max-width: 640px) {
+    body { font-size: 16px; }
+    .page-wrap { padding: 0 18px; }
+    .site-nav { padding: 0 16px; }
+    .career-nav-inner { padding: 10px 16px; }
+    .career-header { padding: 36px 0 24px; }
+    .career-section { padding: 32px 0; }
+    .cs-body { padding-left: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- site nav -->
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a class="back-link" href="index.html"><span class="back-arrow">←</span> Back to home</a>
+    <span class="site-name">Subutai Ahmad</span>
+  </div>
+</nav>
+
+<!-- company pill sub-nav -->
+<div class="career-nav">
+  <div class="career-nav-inner" id="career-nav-inner"></div>
+</div>
+
+<div class="page-wrap">
+  <div class="career-header">
+    <p class="career-label">Where I've worked</p>
+    <h1 class="career-title">Career journey</h1>
+    <p class="career-intro">A quick tour of the labs and startups I've been part of — from research labs, to companies I co-founded, to nearly two decades of brain-inspired AI at Numenta. Throughout, I've tried to combine hard technology, research, and real products.</p>
+  </div>
+
+  <!-- one section per place, rendered from career.js -->
+  <div id="career-sections"></div>
+</div>
+
+<footer>
+  <a href="index.html">← Back to home</a>
+</footer>
+
+<!-- career data (single source of truth — shared with the homepage) -->
+<script src="career.js"></script>
+<script>
+(function () {
+  const navEl  = document.getElementById('career-nav-inner');
+  const mainEl = document.getElementById('career-sections');
+
+  // Image loader: tries jpg/png/gif/webp and uses whichever exists; otherwise
+  // shows a dashed placeholder. opts: { hint, caption, scale }.
+  function figPlaceholderHTML(base, hint) {
+    return `<div class="fig-placeholder">
+      <div class="fig-ic">🖼️</div>
+      <div class="fig-main">Image placeholder</div>
+      <div class="fig-sub">${hint}<br>Drop a file at <code>${base}.jpg</code> (or .png / .gif / .webp) and it appears here.</div>
+    </div>`;
+  }
+  function renderFigure(id, base, opts) {
+    opts = opts || {};
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = `<figure class="career-figure">${figPlaceholderHTML(base, opts.hint || '')}</figure>`;
+    const exts = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+    let i = 0;
+    (function tryNext() {
+      if (i >= exts.length) return;
+      const src = `${base}.${exts[i++]}`;
+      const img = new Image();
+      img.onload  = () => {
+        const imgStyle = opts.scale ? ` style="width:${Math.round(opts.scale * 100)}%;margin-inline:auto;"` : '';
+        const cap = opts.caption ? `<figcaption>${opts.caption}</figcaption>` : '';
+        el.innerHTML = `<figure class="career-figure"><img src="${src}" alt=""${imgStyle}>${cap}</figure>`;
+      };
+      img.onerror = tryNext;
+      img.src = src;
+    })();
+  }
+
+  navEl.innerHTML = CAREER.map(c =>
+    `<a class="career-pill" href="#${c.slug}">${c.company}</a>`
+  ).join('');
+
+  mainEl.innerHTML = CAREER.map(c => {
+    const body = (c.body || []).map(p => `<p>${p}</p>`).join('');
+    const chips = (c.highlights || []).map(h => `<span class="chip">${h}</span>`).join('');
+    const visit = c.url
+      ? `<a class="visit" href="${c.url}" target="_blank" rel="noopener">Visit ${c.company} ↗</a>`
+      : '';
+    return `<section class="career-section" id="${c.slug}">
+      <div class="cs-dates">${c.dates}</div>
+      <h2 class="cs-company">${c.company}</h2>
+      <div class="cs-role">${c.role}</div>
+      <div class="career-media" id="career-fig-${c.slug}"></div>
+      <div class="cs-body">${body}</div>
+      ${chips ? `<div class="cs-highlights">${chips}</div>` : ''}
+      ${visit}
+    </section>`;
+  }).join('');
+
+  // one image per section — a placeholder shows until you drop a file at
+  // images/career/<slug>.<jpg|png|gif|webp>. Optional caption/scale come from a
+  // "fig" object on the career entry (e.g. "fig": { "caption": "...", "scale": 0.6 }).
+  CAREER.forEach(c => {
+    const fig = c.fig || {};
+    renderFigure('career-fig-' + c.slug, 'images/career/' + c.slug,
+      { hint: 'A photo or logo for ' + c.company + '.', caption: fig.caption || '', scale: fig.scale });
+  });
+
+  // sections are rendered by JS, so a #hash in the URL needs a manual scroll
+  if (location.hash) {
+    const el = document.getElementById(location.hash.slice(1));
+    if (el) requestAnimationFrame(() => el.scrollIntoView());
+  }
+})();
+</script>
+</body>
+</html>

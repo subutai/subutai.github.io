@@ -1,0 +1,38 @@
+// Navigation component as JavaScript
+const navigationHTML = `
+<nav class="navbar" id="navbar">
+    <div class="nav-container">
+        <div class="nav-logo">
+            <a href="index.html">Subutai Ahmad</a>
+        </div>
+        <div class="nav-menu" id="nav-menu">
+            <a href="index.html#home" class="nav-link">Home</a>
+            <a href="index.html#research" class="nav-link">Research</a>
+            <a href="index.html#entrepreneurship" class="nav-link">Entrepreneurship</a>
+            <a href="index.html#papers" class="nav-link">Featured Papers</a>
+            <a href="my_refs.html" class="nav-link">All Publications</a>
+            <a href="index.html#contact" class="nav-link">Contact</a>
+        </div>
+        <div class="nav-toggle" id="nav-toggle">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+    </div>
+</nav>
+`;
+
+// Function to load navigation
+function loadNavigationComponent() {
+    const navPlaceholder = document.getElementById('nav-placeholder');
+    if (navPlaceholder) {
+        navPlaceholder.outerHTML = navigationHTML;
+    }
+}
+
+// Auto-load navigation when script is loaded
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadNavigationComponent);
+} else {
+    loadNavigationComponent();
+}
