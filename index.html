@@ -554,19 +554,10 @@
   .pub-item {
     padding: 16px 0;
     border-bottom: 1px dotted var(--rule);
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 0 14px;
-    align-items: start;
   }
-  .pub-year-badge {
-    font-size: 11px;
-    font-weight: 700;
-    color: white;
-    border-radius: 4px;
-    padding: 3px 7px;
-    white-space: nowrap;
-    margin-top: 3px;
+  .pub-year {
+    font-weight: 600;
+    color: var(--ink);
   }
   .pub-title {
     font-family: 'Fraunces', serif;
@@ -712,7 +703,8 @@
     <h1 class="hero-name">Welcome!</h1>
     <p class="hero-tagline">I'm Subutai, a researcher focused on understanding how brains work — and using those concepts to make AI better.</p>
     <p class="hero-intro">
-      I spend much of my time thinking about the neocortex: how it learns, why it's so efficient, and what we might borrow from it to build better machine intelligence. I'm currently Chief Scientist at <a href="https://numenta.com">Numenta</a> and one of the initiators of the <a href="https://thousandbrains.org">Thousand Brains Project</a>. This web page is a collection of notes on my research — and a bit about me. NOTE: still a work in progress - you'll see many incomplete sections.
+      I spend much of my time thinking about the neocortex: how it learns, why it's so efficient, and what we might borrow from it to build better machine intelligence. I'm currently Chief Scientist at <a href="https://numenta.com">Numenta</a> and one of the initiators of the <a href="https://thousandbrains.org">Thousand Brains Project</a>. This web page is a collection of notes on my research — and a bit about me. 
+      <br> NOTE: still a work in progress - you'll see many incomplete sections.
     </p>
   </div>
   <img src="images/Subutai_nta4.jpg" alt="Subutai Ahmad" class="hero-portrait">
@@ -1280,16 +1272,14 @@ buildCareerList();
       const li = document.createElement('li');
       li.className = 'pub-item';
       li.innerHTML = `
-        <span class="pub-year-badge" style="background:${color}">${p.year}</span>
-        <div>
-          <div class="pub-title">${titleHtml}</div>
-          <div class="pub-meta">
-            ${areasHtml}
-            &nbsp;·&nbsp;${p.authors}
-            &nbsp;·&nbsp;${p.venue}${citeHtml}
-          </div>
-          ${pubLinksHtml(p)}
-        </div>`;
+        <div class="pub-title">${titleHtml}</div>
+        <div class="pub-meta">
+          ${areasHtml}
+          &nbsp;·&nbsp;${p.authors}
+          &nbsp;·&nbsp;${p.venue}
+          &nbsp;·&nbsp;<span class="pub-year">${p.year}</span>${citeHtml}
+        </div>
+        ${pubLinksHtml(p)}`;
       listEl.appendChild(li);
     });
   }

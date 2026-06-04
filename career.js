@@ -22,8 +22,12 @@
    • The homepage links each entry to career.html#<slug>.
    • Each section on career.html shows one image from
      images/career/<slug>.<jpg|png|gif|webp> (optional — a placeholder shows
-     until you add it). Add an optional "fig" object to caption it or resize it:
-         "fig": { "caption": "Shown under the image.", "scale": 0.6 }
+     until you add it). Two optional per-image knobs on a career entry:
+       - SIZE    : "scale" — displayed width as a PERCENT of the column
+                   (e.g. "scale": 60 → 60% width; omit → full width).
+       - CAPTION : "fig": { "caption": "Shown under the image." }
+     Example:  "scale": 60, "fig": { "caption": "The YesVideo team, 2003." }
+     (Older "fig": { "scale": 0.6 } fractions are still honored.)
    ============================================================================= */
 const CAREER = [
   {

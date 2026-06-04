@@ -217,6 +217,14 @@
 
   // Image loader: tries jpg/png/gif/webp and uses whichever exists; otherwise
   // shows a dashed placeholder. opts: { hint, caption, scale }.
+  // scale = DISPLAYED width as a percent of the column (e.g. 60 → 60%; omit →
+  // full width). Values ≤ 1 are read as a 0–1 fraction (backward compat),
+  // clamped to 1–100%.
+  function figWidthPct(s) {
+    if (s == null || s === '') return null;
+    let p = s <= 1 ? s * 100 : s;
+    return Math.max(1, Math.min(100, p));
+  }
   function figPlaceholderHTML(base, hint) {
     return `<div class="fig-placeholder">
       <div class="fig-ic">🖼️</div>
@@ -236,7 +244,8 @@
       const src = `${base}.${exts[i++]}`;
       const img = new Image();
       img.onload  = () => {
-        const imgStyle = opts.scale ? ` style="width:${Math.round(opts.scale * 100)}%;margin-inline:auto;"` : '';
+        const pct = figWidthPct(opts.scale);
+        const imgStyle = pct ? ` style="width:${pct}%;max-width:100%;margin-inline:auto;"` : '';
         const cap = opts.caption ? `<figcaption>${opts.caption}</figcaption>` : '';
         el.innerHTML = `<figure class="career-figure"><img src="${src}" alt=""${imgStyle}>${cap}</figure>`;
       };
@@ -270,9 +279,11 @@
   // images/career/<slug>.<jpg|png|gif|webp>. Optional caption/scale come from a
   // "fig" object on the career entry (e.g. "fig": { "caption": "...", "scale": 0.6 }).
   CAREER.forEach(c => {
+    // Per-image knobs from career.js: size = c.scale (percent of column width,
+    // e.g. 60), caption = c.fig.caption. (c.fig.scale still honored.)
     const fig = c.fig || {};
     renderFigure('career-fig-' + c.slug, 'images/career/' + c.slug,
-      { hint: 'A photo or logo for ' + c.company + '.', caption: fig.caption || '', scale: fig.scale });
+      { hint: 'A photo or logo for ' + c.company + '.', caption: fig.caption || '', scale: c.scale ?? fig.scale });
   });
 
   // sections are rendered by JS, so a #hash in the URL needs a manual scroll

@@ -22,3 +22,18 @@ Theme slugs:
 - `anomaly-detection`
 - `vision-attention`
 - `neural-net-foundations`
+
+## Per-image size & caption (edit `themes.js`)
+
+Each of the two images is tuned independently on its theme object:
+
+- **Size** — `scale1` (image 1) and `scale2` (image 2): displayed width as a
+  **percent** of the text column. e.g. `"scale1": 60` shows the lead image at
+  60% width. Omit for full width. (Values ≤ 1 are still read as a 0–1 fraction.)
+- **Caption** — `fig1` / `fig2`: `"fig1": { "caption": "Shown under the image." }`
+
+```js
+// in themes.js, on the sparsity theme:
+"scale1": 80,
+"fig1": { "caption": "Video of cells firing in a mouse neocortex." }
+```

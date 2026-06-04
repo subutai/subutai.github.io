@@ -18,12 +18,16 @@ Career slugs:
 - `eplanet`
 - `interval-research`
 
-## Optional per-image caption / size
-Add a `fig` object to that entry in `career.js` to caption an image or shrink
-its displayed size:
+## Optional per-image size & caption (edit `career.js`)
+Two independent knobs on the career entry:
+
+- **Size** — `scale`: displayed width as a **percent** of the column.
+  e.g. `"scale": 60` shows the image at 60% width. Omit for full width.
+  (Values ≤ 1 are still read as a 0–1 fraction.)
+- **Caption** — `fig`: `"fig": { "caption": "Shown under the image." }`
 
 ```js
-"fig": { "caption": "Shown under the image.", "scale": 0.6 }
+// in career.js, on a career entry:
+"scale": 60,
+"fig": { "caption": "The YesVideo team, 2003." }
 ```
-- `caption` — text under the image (omit → no caption)
-- `scale`   — 0–1 fraction of the displayed width (e.g. 0.6 = 60%; omit → full width)

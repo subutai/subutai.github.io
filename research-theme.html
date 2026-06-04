@@ -274,20 +274,10 @@
   .pub-item {
     padding: 16px 0;
     border-bottom: 1px dotted var(--rule);
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 0 14px;
-    align-items: start;
   }
-  .pub-year-badge {
-    font-size: 11px;
-    font-weight: 700;
-    color: white;
-    border-radius: 4px;
-    padding: 3px 7px;
-    white-space: nowrap;
-    margin-top: 3px;
-    background: var(--accent);
+  .pub-year {
+    font-weight: 600;
+    color: var(--ink);
   }
   .pub-title {
     font-family: 'Fraunces', serif;
@@ -492,7 +482,14 @@ function figPlaceholderHTML(base, hint) {
 // `base` is the path WITHOUT an extension, e.g. "images/research/sparsity-1".
 // We try several formats and use whichever file actually exists (.jpg/.png/.gif/.webp).
 // opts: { hint } placeholder text while empty; { caption } shown under a real image
-// (omit/"" → no caption); { scale } 0–1 to shrink the DISPLAYED size (e.g. 0.4 = 40%).
+// (omit/"" → no caption); { scale } DISPLAYED width as a percent of the column
+// (e.g. 60 → 60% width; omit → full width). Values ≤ 1 are read as a 0–1 fraction
+// for backward compatibility, and everything is clamped to 1–100%.
+function figWidthPct(s) {
+  if (s == null || s === '') return null;
+  let p = s <= 1 ? s * 100 : s;             // ≤1 → legacy fraction (0.6 → 60)
+  return Math.max(1, Math.min(100, p));
+}
 function renderFigure(id, base, opts) {
   opts = opts || {};
   const el = document.getElementById(id);
@@ -504,7 +501,8 @@ function renderFigure(id, base, opts) {
     const src = `${base}.${exts[i++]}`;
     const img = new Image();
     img.onload  = () => {
-      const imgStyle = opts.scale ? ` style="width:${Math.round(opts.scale * 100)}%;margin-inline:auto;"` : '';
+      const pct = figWidthPct(opts.scale);
+      const imgStyle = pct ? ` style="width:${pct}%;max-width:100%;margin-inline:auto;"` : '';
       const cap = opts.caption ? `<figcaption>${opts.caption}</figcaption>` : '';
       el.innerHTML = `<figure class="theme-figure"><img src="${src}" alt=""${imgStyle}>${cap}</figure>`;
     };
@@ -550,11 +548,15 @@ function render() {
 
   // Two image placeholders (auto-swap to real images once the files exist)
   // Per-image caption/scale come from the theme's optional fig1 / fig2 in themes.js.
+  // Per-image knobs from themes.js:
+  //   • size    : theme.scale1 / theme.scale2  (percent of column width, e.g. 60)
+  //   • caption : theme.fig1.caption / theme.fig2.caption
+  // (fig1.scale / fig2.scale are still honored for backward compatibility.)
   const fig1 = theme.fig1 || {}, fig2 = theme.fig2 || {};
   renderFigure('theme-fig-1', `images/research/${theme.slug}-1`,
-    { hint: 'A lead image for this theme — a key figure or a relevant photo.', caption: fig1.caption || '', scale: fig1.scale });
+    { hint: 'A lead image for this theme — a key figure or a relevant photo.', caption: fig1.caption || '', scale: theme.scale1 ?? fig1.scale });
   renderFigure('theme-fig-2', `images/research/${theme.slug}-2`,
-    { hint: 'A second supporting image or diagram.', caption: fig2.caption || '', scale: fig2.scale });
+    { hint: 'A second supporting image or diagram.', caption: fig2.caption || '', scale: theme.scale2 ?? fig2.scale });
 
   // Publications filtered by area, sorted by citation count (most cited first)
   const themePubs = PUBS
@@ -579,12 +581,9 @@ function render() {
       const li = document.createElement('li');
       li.className = 'pub-item';
       li.innerHTML = `
-        <span class="pub-year-badge">${p.year}</span>
-        <div>
-          <div class="pub-title">${titleHtml}</div>
-          <div class="pub-meta">${p.authors} · ${p.venue}${citeHtml}</div>
-          ${pubLinksHtml(p)}
-        </div>`;
+        <div class="pub-title">${titleHtml}</div>
+        <div class="pub-meta">${p.authors} · ${p.venue} · <span class="pub-year">${p.year}</span>${citeHtml}</div>
+        ${pubLinksHtml(p)}`;
       pubList.appendChild(li);
     });
   }
