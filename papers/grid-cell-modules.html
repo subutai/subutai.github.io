@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grid Cell Modules — Encoding Location as an SDR (Locations in the Neocortex)</title>
+
+<!-- KaTeX for equation rendering.
+     CDN first, so this page still renders math when the .html file is shared on its own (any machine with internet).
+     Falls back to the locally vendored copy in ../assets/katex/ when the CDN is unreachable (e.g. offline). -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous"
+      onerror="this.onerror=null;this.removeAttribute('crossorigin');this.href='../assets/katex/katex.min.css';">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"
+        onerror="this.onerror=null;var s=document.createElement('script');s.defer=true;s.src='../assets/katex/katex.min.js';document.head.appendChild(s);"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+        onerror="this.onerror=null;var s=document.createElement('script');s.defer=true;s.src='../assets/katex/contrib/auto-render.min.js';document.head.appendChild(s);"></script>
+
+<style>
+  :root{
+    --accent:#8a5fa6;        /* muted plum — page accent (site family, but its own color) */
+    --accent-dark:#6b4684;
+    --accent-soft:#f0e9f4;
+    --ink:#2d2a24;           /* warm ink — matches the rest of the site */
+    --muted:#6b6357;
+    --line:#d9d3c6;
+    --bg:#faf8f3;            /* warm cream paper — matches the rest of the site */
+    --code-bg:#1a1430;
+    --code-ink:#e9e2fb;
+    --teach:#0d7d8f;
+    --teach-soft:#e4f5f8;
+    --warn-soft:#fff6e6;
+    --warn-edge:#e0a93b;
+    /* three module colors, matching the paper's green / red / blue cell convention */
+    --m1:#10b981; --m1d:#047857; --m1s:#e7f8f1;
+    --m2:#f43f5e; --m2d:#be123c; --m2s:#fdeaee;
+    --m3:#6366f1; --m3d:#4338ca; --m3s:#eaecfd;
+    --maxw:980px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;color:var(--ink);background:var(--bg);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.65;font-size:17px;
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 1.25rem 5rem}
+  header.hero{
+    background:linear-gradient(135deg,#3f2b54 0%,var(--accent-dark) 55%,var(--accent) 100%);
+    color:#fff;padding:3rem 1.25rem 2.4rem;margin-bottom:1.6rem;
+  }
+  header.hero .inner{max-width:var(--maxw);margin:0 auto}
+  .tag{display:inline-block;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;
+    background:rgba(255,255,255,.16);padding:.28rem .7rem;border-radius:999px;margin-bottom:1rem}
+  header.hero h1{font-size:2.05rem;line-height:1.18;margin:.2rem 0 .5rem;font-weight:800}
+  header.hero .sub{opacity:.93;font-size:1.04rem;margin:.2rem 0 1.2rem;max-width:60ch}
+  .links a{
+    display:inline-block;background:#fff;color:var(--accent-dark);text-decoration:none;
+    font-weight:600;font-size:.86rem;padding:.45rem .9rem;border-radius:8px;margin:.2rem .5rem .2rem 0;
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .links a:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(0,0,0,.18)}
+  .links a.ghost{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.4)}
+  h2{font-size:1.5rem;margin:2.6rem 0 .8rem;padding-top:.6rem;border-top:2px solid var(--line);font-weight:750;scroll-margin-top:1rem}
+  h3{font-size:1.14rem;margin:1.7rem 0 .5rem;color:var(--accent-dark)}
+  h2 .num{color:var(--accent);font-variant-numeric:tabular-nums;margin-right:.5rem}
+  p{margin:.7rem 0}
+  a{color:var(--accent-dark)}
+  strong{font-weight:680}
+  ul,ol{padding-left:1.3rem}
+  li{margin:.32rem 0}
+  nav.toc{background:var(--accent-soft);border:1px solid var(--line);border-radius:14px;padding:1.1rem 1.3rem;margin:0 0 1.5rem}
+  nav.toc h2{border:0;margin:0 0 .5rem;padding:0;font-size:1rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent-dark)}
+  nav.toc ol{list-style:none;padding-left:0;margin:0;columns:2;column-gap:2rem}
+  nav.toc li{margin:.32rem 0}
+  nav.toc a{text-decoration:none;color:var(--ink);font-weight:550}
+  nav.toc a:hover{color:var(--accent);text-decoration:underline}
+  nav.toc .n{color:var(--accent);font-weight:700;margin-right:.45rem;font-variant-numeric:tabular-nums}
+  @media(max-width:620px){nav.toc ol{columns:1}}
+  .callout{border-radius:12px;padding:.9rem 1.1rem;margin:1.1rem 0;font-size:.97rem}
+  .callout p:first-child{margin-top:0}.callout p:last-child{margin-bottom:0}
+  .intuition{background:var(--teach-soft);border-left:4px solid var(--teach)}
+  .intuition .label{color:var(--teach);font-weight:700;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase}
+  .keyidea{background:var(--accent-soft);border-left:4px solid var(--accent)}
+  .keyidea .label{color:var(--accent-dark);font-weight:700;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase}
+  .note{background:var(--warn-soft);border-left:4px solid var(--warn-edge)}
+  .note .label{color:#9a6a00;font-weight:700;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase}
+  .eqbox{background:#faf7ff;border:1px solid var(--line);border-radius:10px;padding:.5rem 1rem;margin:1rem 0;overflow-x:auto}
+  .eqbox .cap{font-size:.82rem;color:var(--muted);margin:.1rem 0 .2rem}
+  figure{margin:1.6rem 0;text-align:center}
+  figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:10px;background:#fff}
+  figure svg{max-width:100%;height:auto}
+  figcaption{font-size:.85rem;color:var(--muted);margin-top:.6rem;text-align:center}
+  table{border-collapse:collapse;width:100%;margin:1.2rem 0;font-size:.92rem}
+  th,td{border:1px solid var(--line);padding:.5rem .7rem;text-align:left}
+  th{background:var(--accent-soft);color:var(--accent-dark);font-weight:650}
+  tr:nth-child(even) td{background:#faf8fe}
+  code.inline{background:var(--accent-soft);color:var(--accent-dark);padding:.08rem .35rem;border-radius:5px;font-size:.86em;font-family:"SFMono-Regular",Menlo,Consolas,monospace}
+  footer{margin-top:3rem;padding-top:1.5rem;border-top:2px solid var(--line);color:var(--muted);font-size:.85rem}
+  .backlink{font-size:.85rem}
+  .small{font-size:.86rem;color:var(--muted)}
+
+  /* ---------- demo ---------- */
+  .demo{border:2px solid var(--accent);border-radius:18px;padding:1.2rem 1.2rem 1.4rem;margin:1.6rem 0;
+    background:linear-gradient(180deg,#fdfbf6,var(--accent-soft))}
+  .demo h3{margin-top:0;color:var(--accent-dark)}
+  .toolbar{display:flex;flex-wrap:wrap;gap:.6rem .8rem;align-items:center;margin:.2rem 0 1rem;
+    background:#fff;border:1px solid var(--line);border-radius:12px;padding:.7rem .8rem}
+  .toolbar .grp{display:flex;align-items:center;gap:.45rem;font-size:.84rem;font-weight:600;color:var(--muted)}
+  .btn{background:var(--accent);color:#fff;border:0;border-radius:9px;padding:.5rem .9rem;font-weight:650;font-size:.85rem;cursor:pointer;transition:background .12s ease, transform .08s ease}
+  .btn:hover{background:var(--accent-dark)}
+  .btn:active{transform:translateY(1px)}
+  .btn.sec{background:#fff;color:var(--accent-dark);border:1px solid var(--accent)}
+  .btn.sec:hover{background:var(--accent-soft)}
+  .seedpill{font-family:"SFMono-Regular",Menlo,monospace;font-size:.8rem;background:var(--accent-soft);color:var(--accent-dark);
+    padding:.18rem .5rem;border-radius:6px;font-weight:700}
+  input[type=range]{accent-color:var(--accent);vertical-align:middle;width:130px}
+
+  .demo-grid{display:flex;gap:1.1rem;flex-wrap:wrap;align-items:flex-start}
+  .arena-col{flex:1 1 320px;min-width:300px}
+  .modules-col{flex:1 1 560px;min-width:300px;display:flex;flex-direction:column;gap:1rem}
+
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:.9rem .95rem}
+  .card .ttl{font-weight:750;font-size:.96rem;display:flex;align-items:center;gap:.5rem;margin-bottom:.2rem}
+  .card .hint{font-size:.8rem;color:var(--muted);margin:.1rem 0 .6rem}
+  .dot{width:.85rem;height:.85rem;border-radius:50%;display:inline-block;flex:none}
+
+  /* collapsible module cards */
+  details.modcard{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  details.modcard>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:.5rem;
+    padding:.7rem .95rem;font-weight:750;font-size:.96rem;user-select:none}
+  details.modcard>summary::-webkit-details-marker{display:none}
+  details.modcard>summary::before{content:"▸";color:var(--muted);font-size:.72rem;transition:transform .15s ease;flex:none}
+  details.modcard[open]>summary::before{transform:rotate(90deg)}
+  details.modcard>summary:hover{background:var(--accent-soft)}
+  details.modcard .modbody{padding:0 .95rem .9rem}
+  .msum{margin-left:auto;font-size:.74rem;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums;text-align:right}
+
+  canvas{display:block;max-width:100%;background:#fff;border-radius:10px;touch-action:none}
+  .arena-wrap{position:relative}
+  #arena{border:1px solid var(--line);cursor:crosshair;width:100%;aspect-ratio:1/1}
+  .dpad{display:grid;grid-template-columns:repeat(3,46px);grid-template-rows:repeat(3,46px);gap:.35rem;justify-content:center;margin:.7rem auto 0}
+  .dpad button{border:1px solid var(--accent);background:#fff;color:var(--accent-dark);border-radius:10px;font-size:1.1rem;font-weight:800;cursor:pointer;transition:background .1s ease}
+  .dpad button:hover{background:var(--accent-soft)}
+  .dpad button:active{background:var(--accent);color:#fff}
+  .dpad .nw,.dpad .ne,.dpad .sw,.dpad .se{visibility:hidden}
+  .dpad .c{border:0;background:transparent;color:var(--muted);font-size:.68rem;font-weight:600;cursor:default}
+
+  .legend{font-size:.78rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:.15rem 1rem;margin-top:.5rem}
+  .legend span{display:inline-flex;align-items:center;gap:.32rem}
+  .sw{display:inline-block;width:.85rem;height:.85rem;border-radius:3px;vertical-align:-1px}
+
+  .ctrls{display:grid;grid-template-columns:1fr 1fr;gap:.35rem .9rem;margin:.2rem 0 .7rem}
+  .ctrls label{font-size:.78rem;font-weight:600;color:var(--muted);display:flex;flex-direction:column;gap:.12rem}
+  .ctrls label .v{color:var(--ink);font-weight:700;font-variant-numeric:tabular-nums}
+  .ctrls input[type=range]{width:100%}
+  .modtoggles{display:flex;gap:1rem;flex-wrap:wrap;font-size:.78rem;font-weight:600;color:var(--muted);margin:.1rem 0 .5rem}
+  .modtoggles label{display:inline-flex;align-items:center;gap:.3rem;cursor:pointer}
+
+  .mod-viz{display:flex;gap:.8rem;flex-wrap:wrap;align-items:flex-start}
+  .viz-block{flex:1 1 180px;min-width:150px}
+  .viz-block .lab{font-size:.74rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:.25rem}
+  .rhombus-c{width:100%;aspect-ratio:1.5/1;border:1px solid var(--line)}
+  .sdrgrid{display:grid;gap:2px;width:100%;max-width:150px;margin-top:.1rem}
+  .bit{width:100%;aspect-ratio:1/1;background:#ece9f5;border-radius:2px}
+  .readout{font-size:.8rem;background:#faf8fe;border:1px solid var(--line);border-radius:8px;padding:.4rem .6rem;margin-top:.55rem;color:var(--muted)}
+  .readout b{color:var(--ink);font-variant-numeric:tabular-nums}
+
+  .final{margin-top:1.1rem}
+  .final .strip{display:flex;flex-wrap:wrap;gap:3px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:10px;padding:.7rem;}
+  .final .mgroup{display:flex;flex-direction:column;gap:.25rem;align-items:center}
+  .final .mgroup .mlab{font-size:.68rem;font-weight:700;color:var(--muted)}
+  .final .mgroup .grid{display:grid;gap:2px}
+  .final .mgroup .grid .b{width:9px;height:9px;border-radius:2px;background:#ece9f5}
+  .final .sep{width:1px;align-self:stretch;background:var(--line);margin:0 .25rem}
+  .stats{display:flex;flex-wrap:wrap;gap:.5rem .9rem;margin-top:.7rem}
+  .stat{background:#fff;border:1px solid var(--line);border-radius:10px;padding:.45rem .75rem;font-size:.82rem;color:var(--muted)}
+  .stat b{display:block;font-size:1.05rem;color:var(--accent-dark);font-variant-numeric:tabular-nums}
+
+  .uniqwrap{margin-top:.9rem}
+  #uniq{border:1px solid var(--line);width:100%;aspect-ratio:1/1}
+  details.adv{margin-top:.6rem;font-size:.85rem}
+  details.adv summary{cursor:pointer;font-weight:650;color:var(--accent-dark)}
+  kbd{background:#fff;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:0 .35rem;font-size:.78rem;font-family:"SFMono-Regular",Menlo,monospace}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="inner">
+    <span class="tag">Interactive demo · Numenta location theory</span>
+    <h1>Grid Cell Modules: turning a location into a unique SDR</h1>
+    <p class="sub">An interactive companion to <em>Locations in the Neocortex: A Theory of Sensorimotor Object
+      Recognition Using Cortical Grid Cells</em> (Lewis, Purdy, Ahmad &amp; Hawkins, 2019). Move a sensor around an
+      environment and watch how a handful of grid-cell modules — each a small wrapping rhombus of cells — combine into
+      a sparse code that pins down location uniquely.</p>
+    <div class="links">
+      <a href="https://www.frontiersin.org/articles/10.3389/fncir.2019.00022/full" target="_blank" rel="noopener">Read the paper ↗</a>
+      <a class="ghost" href="https://doi.org/10.3389/fncir.2019.00022" target="_blank" rel="noopener">DOI: 10.3389/fncir.2019.00022</a>
+      <a class="ghost" href="https://github.com/numenta/htmresearch/blob/master/htmresearch/algorithms/location_modules.py" target="_blank" rel="noopener">Source: location_modules.py ↗</a>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <p class="backlink"><a href="../index.html">← Back to all paper reviews</a></p>
+
+  <nav class="toc" aria-label="Table of contents">
+    <h2>Contents</h2>
+    <ol>
+      <li><span class="n">1</span><a href="#bigidea">The big idea in one paragraph</a></li>
+      <li><span class="n">2</span><a href="#anatomy">Anatomy of a module</a></li>
+      <li><span class="n">3</span><a href="#figure1">The picture from the paper</a></li>
+      <li><span class="n">4</span><a href="#demo">▶ Interactive playground</a></li>
+      <li><span class="n">5</span><a href="#math">The math, in one screen</a></li>
+      <li><span class="n">6</span><a href="#why">Why this representation is so good</a></li>
+      <li><span class="n">7</span><a href="#tryit">Things to try</a></li>
+      <li><span class="n">8</span><a href="#refs">Notes &amp; references</a></li>
+    </ol>
+  </nav>
+
+  <!-- ============================================================= -->
+  <h2 id="bigidea"><span class="num">1</span>The big idea in one paragraph</h2>
+  <p>
+    In the entorhinal cortex, <strong>grid cells</strong> fire at a repeating triangular lattice of locations as an
+    animal moves. A <strong>grid cell module</strong> is a population of grid cells that share one lattice
+    <em>scale</em> and <em>orientation</em>; what differs between them is the relative position at which each fires.
+    Sort the cells by that relative position and a module collapses into a small <strong>rhombus-shaped tile</strong>
+    with a single <strong>bump</strong> of activity. Because the lattice repeats, <em>one module cannot say where you
+    are</em> — the same bump recurs all over the environment. But the paper's central move is this: stack several
+    modules with <em>different</em> scales and orientations, and the <strong>combination</strong> of their bumps almost
+    never repeats. A few small, ambiguous codes multiply into one large, sparse, essentially unique code for location —
+    and movement updates it through <strong>path integration</strong>. This page lets you build that code by hand.
+  </p>
+
+  <div class="callout keyidea">
+    <span class="label">Key idea</span>
+    <p style="margin:.3rem 0 0">Each module is a low-resolution, <em>wrap-around</em> ruler. No single ruler is enough.
+    Read several rulers of different scale and tilt at once and only one location in the whole environment is consistent
+    with all of them — like reading a vernier scale, or the hands of a clock.</p>
+  </div>
+
+  <!-- ============================================================= -->
+  <h2 id="anatomy"><span class="num">2</span>Anatomy of a module</h2>
+  <p>
+    Three views of the <em>same</em> set of cells. The module's cells tile the world in a repeating lattice (left); if
+    you re-sort them by their relative firing position they form a rhombus with one Gaussian bump (middle); threshold
+    that bump and you get a tiny binary SDR (right). The interactive demo below shows all three live.
+  </p>
+
+  <figure>
+    <svg viewBox="0 0 760 230" role="img" aria-label="A module shown three ways: a repeating lattice in the world, a sorted rhombus with a bump, and a thresholded SDR.">
+      <!-- World lattice -->
+      <g transform="translate(10,18)">
+        <rect x="0" y="0" width="200" height="180" rx="8" fill="#f6f1fe" stroke="#e5ddf4"/>
+        <text x="100" y="-4" text-anchor="middle" font-size="12" font-weight="700" fill="#5b5470">Lattice in the world</text>
+        <!-- lattice of green dots -->
+        <g fill="#10b981">
+          <!-- generated triangular-ish lattice -->
+          <circle cx="28" cy="40" r="6"/><circle cx="78" cy="32" r="6"/><circle cx="128" cy="24" r="6"/><circle cx="178" cy="16" r="6"/>
+          <circle cx="44" cy="86" r="6"/><circle cx="94" cy="78" r="6"/><circle cx="144" cy="70" r="6"/><circle cx="194" cy="62" r="6"/>
+          <circle cx="60" cy="132" r="6"/><circle cx="110" cy="124" r="6"/><circle cx="160" cy="116" r="6"/>
+          <circle cx="20" cy="132" r="6"/><circle cx="76" cy="170" r="6"/><circle cx="126" cy="162" r="6"/><circle cx="176" cy="154" r="6"/>
+        </g>
+        <!-- mouse -->
+        <g transform="translate(100,95)"><circle r="7" fill="#1c1530"/><circle cx="-3" cy="-3" r="2" fill="#fff"/></g>
+        <text x="100" y="196" text-anchor="middle" font-size="10.5" fill="#5b5470">cells fire at many places</text>
+      </g>
+      <!-- arrow -->
+      <text x="232" y="112" font-size="22" fill="#7c3aed">→</text>
+      <text x="232" y="130" font-size="9" fill="#5b5470">sort cells</text>
+      <!-- Rhombus -->
+      <g transform="translate(258,18)">
+        <text x="105" y="-4" text-anchor="middle" font-size="12" font-weight="700" fill="#5b5470">Sorted rhombus (1 bump)</text>
+        <!-- parallelogram 60 deg -->
+        <polygon points="20,170 140,170 200,30 80,30" fill="#faf7ff" stroke="#e5ddf4"/>
+        <!-- bump as radial gradient -->
+        <defs>
+          <radialGradient id="bump" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#e63232"/>
+            <stop offset="25%" stop-color="#f6a13a"/>
+            <stop offset="50%" stop-color="#36c46a"/>
+            <stop offset="75%" stop-color="#1f9bb5"/>
+            <stop offset="100%" stop-color="#0b0b3b" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <ellipse cx="108" cy="104" rx="46" ry="40" fill="url(#bump)"/>
+        <circle cx="108" cy="104" r="4" fill="#fff" stroke="#1c1530" stroke-width="1.5"/>
+        <text x="105" y="196" text-anchor="middle" font-size="10.5" fill="#5b5470">activity = Gaussian of distance to bump</text>
+      </g>
+      <!-- arrow -->
+      <text x="486" y="112" font-size="22" fill="#7c3aed">→</text>
+      <text x="486" y="130" font-size="9" fill="#5b5470">threshold</text>
+      <!-- SDR grid -->
+      <g transform="translate(540,18)">
+        <text x="100" y="-4" text-anchor="middle" font-size="12" font-weight="700" fill="#5b5470">SDR (w×w cells)</text>
+        <g>
+          <!-- 6x6 grid, light cells -->
+          <!-- row/col loop emulated -->
+          <g fill="#ece9f5">
+            <rect x="20" y="30" width="26" height="26" rx="3"/><rect x="50" y="30" width="26" height="26" rx="3"/><rect x="80" y="30" width="26" height="26" rx="3"/><rect x="110" y="30" width="26" height="26" rx="3"/><rect x="140" y="30" width="26" height="26" rx="3"/><rect x="170" y="30" width="26" height="26" rx="3"/>
+            <rect x="20" y="60" width="26" height="26" rx="3"/><rect x="50" y="60" width="26" height="26" rx="3"/><rect x="80" y="60" width="26" height="26" rx="3"/><rect x="110" y="60" width="26" height="26" rx="3"/><rect x="140" y="60" width="26" height="26" rx="3"/><rect x="170" y="60" width="26" height="26" rx="3"/>
+            <rect x="20" y="90" width="26" height="26" rx="3"/><rect x="50" y="90" width="26" height="26" rx="3"/><rect x="80" y="90" width="26" height="26" rx="3"/><rect x="110" y="90" width="26" height="26" rx="3"/><rect x="140" y="90" width="26" height="26" rx="3"/><rect x="170" y="90" width="26" height="26" rx="3"/>
+            <rect x="20" y="120" width="26" height="26" rx="3"/><rect x="50" y="120" width="26" height="26" rx="3"/><rect x="80" y="120" width="26" height="26" rx="3"/><rect x="110" y="120" width="26" height="26" rx="3"/><rect x="140" y="120" width="26" height="26" rx="3"/><rect x="170" y="120" width="26" height="26" rx="3"/>
+          </g>
+          <!-- active cells -->
+          <g fill="#10b981">
+            <rect x="80" y="60" width="26" height="26" rx="3"/><rect x="110" y="60" width="26" height="26" rx="3"/>
+            <rect x="80" y="90" width="26" height="26" rx="3"/><rect x="110" y="90" width="26" height="26" rx="3"/>
+          </g>
+        </g>
+        <text x="108" y="172" text-anchor="middle" font-size="10.5" fill="#5b5470">a handful of bits on</text>
+      </g>
+    </svg>
+    <figcaption>The three views of one module. Scale and orientation live in the <em>world</em> view; the
+      <em>rhombus</em> is the module's internal state (a phase); the <em>SDR</em> is what the rest of cortex reads.</figcaption>
+  </figure>
+
+  <!-- ============================================================= -->
+  <h2 id="figure1"><span class="num">3</span>The picture from the paper</h2>
+  <p>
+    This is Figure&nbsp;1 from the paper itself. <strong>(A)</strong> a single grid cell fires at a repeating lattice;
+    <strong>(B)</strong> sort a module's cells and they form a rhombus tile with one bump — movement shifts the bump,
+    and it wraps at the edges; <strong>(C)</strong> a second module tiles the same space at a larger scale and different
+    orientation, so the <em>same</em> movement shifts its bump differently; <strong>(D)</strong> superimpose the
+    modules and only <em>one</em> location is consistent with both — where green and red coincide.
+  </p>
+  <figure>
+    <img src="figure1-modules.png"
+         alt="Figure 1 from Lewis et al. 2019: (A) one grid cell's firing lattice in an environment; (B) a module sorted into a rhombus with a single activity bump and a movement arrow; (C) a second module at larger scale and different orientation; (D) both modules superimposed, with a unique location where green and red cells coincide."
+         onerror="this.closest('figure').style.display='none';">
+    <figcaption>Figure&nbsp;1 from Lewis, Purdy, Ahmad &amp; Hawkins (2019), <em>Front. Neural Circuits</em> 13:22 (open
+      access, CC&nbsp;BY). The demo below is a live, parameterised version of panels B–D.</figcaption>
+  </figure>
+
+  <!-- ============================================================= -->
+  <h2 id="demo"><span class="num">4</span>Interactive playground</h2>
+  <p>
+    Drive the sensor around the arena with the arrow pad (or <kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> /
+    <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>, or click in the arena). Each module shows its rhombus with the live
+    Gaussian bump and the SDR it thresholds to. The three SDRs concatenate into the final location code at the bottom.
+    Hit <strong>New seed</strong> to re-roll the random starting bumps — exactly what each module does when it enters a
+    new environment. Collapse a module (or use <strong>Collapse modules</strong>) to shrink the panel; the equations
+    behind every pixel are in the <a href="#math">math section</a> below.
+  </p>
+
+  <div class="demo">
+    <div class="toolbar">
+      <button class="btn" id="newseed">🎲 New seed</button>
+      <button class="btn sec" id="recenter">⌖ Recenter sensor</button>
+      <button class="btn sec" id="collapseAll">⊟ Collapse modules</button>
+      <span class="grp">seed <span class="seedpill" id="seedval">—</span></span>
+      <span class="grp">step
+        <input type="range" id="step" min="0.012" max="0.08" step="0.002" value="0.03" aria-label="Movement step size">
+        <span class="v" id="stepv" style="font-variant-numeric:tabular-nums;color:var(--ink);font-weight:700">0.030</span>
+      </span>
+      <span class="grp">bump σ
+        <input type="range" id="sigma" min="0.06" max="0.32" step="0.005" value="0.18" aria-label="Gaussian bump width sigma">
+        <span class="v" id="sigmav" style="font-variant-numeric:tabular-nums;color:var(--ink);font-weight:700">0.180</span>
+      </span>
+    </div>
+
+    <div class="demo-grid">
+      <!-- ARENA -->
+      <div class="arena-col">
+        <div class="card">
+          <div class="ttl">🐭 Environment</div>
+          <div class="hint">The sensor (mouse) explores a square arena. Overlaid dots are each module's firing
+            lattice — its scale and tilt made visible.</div>
+          <div class="arena-wrap">
+            <canvas id="arena" width="600" height="600" role="img"
+              aria-label="Square environment with the sensor and each module's firing lattice; move with the arrow pad below."></canvas>
+          </div>
+          <div class="dpad">
+            <button class="nw"></button>
+            <button data-dir="N" aria-label="Move north">↑</button>
+            <button class="ne"></button>
+            <button data-dir="W" aria-label="Move west">←</button>
+            <button class="c">move</button>
+            <button data-dir="E" aria-label="Move east">→</button>
+            <button class="sw"></button>
+            <button data-dir="S" aria-label="Move south">↓</button>
+            <button class="se"></button>
+          </div>
+          <div class="legend" id="arenaLegend"></div>
+        </div>
+
+        <div class="card uniqwrap">
+          <div class="ttl">🔎 Where else is this exact code?</div>
+          <div class="hint">Every arena spot whose <em>combined</em> SDR matches the sensor's right now is lit. With one
+            module you see the lattice of aliases; add modules and they collapse to a single spot — that is uniqueness,
+            made visible.</div>
+          <canvas id="uniq" width="600" height="600" role="img"
+            aria-label="Map of the arena highlighting every location whose combined SDR matches the sensor's current code; see the text readout below for the percentage."></canvas>
+          <div class="readout" id="uniqReadout">—</div>
+        </div>
+      </div>
+
+      <!-- MODULES -->
+      <div class="modules-col" id="modulesCol"></div>
+    </div>
+
+    <!-- FINAL SDR -->
+    <div class="final card">
+      <div class="ttl">🧩 Final location SDR <span class="small" style="font-weight:500">— concatenation of all enabled modules</span></div>
+      <div class="hint">This long, sparse binary vector is what a cortical column actually reads as "where am I on the
+        object?". Sparse + high-dimensional ⇒ astronomically many distinguishable locations.</div>
+      <div class="strip" id="finalStrip"></div>
+      <div class="stats" id="finalStats"></div>
+    </div>
+
+    <details class="adv">
+      <summary>What the numbers mean</summary>
+      <p style="margin:.5rem 0 0">Per module you control: <strong>scale</strong> \(s_i\) (lattice spacing in the arena —
+      bigger = coarser ruler), <strong>orientation</strong> \(\theta_i\), <strong>cells</strong> \(w\) (the SDR has
+      \(w^2\) bits), and <strong>readout</strong> \(\delta\varphi\) (smaller = sharper, sparser bump). "Distinguishable
+      phases" is \(\approx(1/\delta\varphi)^2\) — the number of locations one module can resolve before it repeats.
+      The combined capacity multiplies across modules, which is why a few small modules represent so much.</p>
+    </details>
+  </div>
+
+  <!-- ============================================================= -->
+  <h2 id="math"><span class="num">5</span>The math, in one screen</h2>
+  <p>
+    Everything the demo just did reduces to a handful of equations. A module's whole state is a 2-D <strong>phase</strong>
+    \(\vec{\varphi}\in[0,1)\times[0,1)\) — where the bump sits in the rhombus.
+  </p>
+
+  <h3>Movement → a shift in phase (path integration)</h3>
+  <p>Each module owns a 2&times;2 matrix \(M_i\) built from its scale \(s_i\) and orientation \(\theta_i\). It turns a
+    movement of the sensor in the world into a movement of the bump, baking in the 60° lattice geometry:</p>
+  <div class="eqbox">
+    <div class="cap">Eq. (3) — the module's scale/orientation transform</div>
+    $$ M_i = \begin{bmatrix} s_i\cos\theta_i & s_i\cos(\theta_i+60^\circ)\\[2pt] s_i\sin\theta_i & s_i\sin(\theta_i+60^\circ)\end{bmatrix}^{-1} $$
+  </div>
+  <div class="eqbox">
+    <div class="cap">Eq. (4) — every movement \(\vec{d}_t\) shifts the bump, wrapping with <code class="inline">mod 1</code></div>
+    $$ \vec{\varphi}^{\,i}_{t,\text{move}} = \left(\vec{\varphi}^{\,i}_{t-1,\text{sense}} + M_i\,\vec{d}_t\right)\bmod 1 $$
+  </div>
+  <div class="callout intuition">
+    <span class="label">Why the demo can jump anywhere instantly</span>
+    <p style="margin:.3rem 0 0">Applying Eq.&nbsp;(4) step after step just sums the displacements, so the bump's phase
+    has a tidy closed form: \(\vec{\varphi}^{\,i}(\vec{x}) = \big(\vec{\varphi}^{\,i}_0 + M_i(\vec{x}-\vec{x}_0)\big)\bmod 1\).
+    The demo computes phase straight from the sensor's <em>position</em>. A neat consequence: the code at a place is
+    <strong>independent of the path</strong> you took to get there — wander off and come back and the SDR is identical.</p>
+  </div>
+
+  <h3>Phase → which cells are on (the Gaussian bump)</h3>
+  <p>Each cell \(c\) sits at a fixed phase \(\vec{\varphi}_c\) (the module is partitioned into \(w\times w\) equal
+    tiles). A cell's scalar activation is a Gaussian of its distance to the bump \(b\), measured <em>on the rhombus</em>
+    (so it wraps around the edges):</p>
+  <div class="eqbox">
+    <div class="cap">Eqs. (10–11) — Gaussian activation</div>
+    $$ \text{Gaussian}(d) = e^{-d^2/2\sigma^2}, \qquad a_{c,b} = \text{Gaussian}\!\big(\text{Distance}(\vec{\varphi}_c,\vec{\varphi}_b)\big) $$
+  </div>
+  <p>A cell is part of the SDR when its activation clears a threshold set by the <strong>readout resolution</strong>
+    \(\delta\varphi\) — roughly the diameter of phases one bump should stand for:</p>
+  <div class="eqbox">
+    <div class="cap">Eqs. (13–14) — threshold into a binary SDR</div>
+    $$ A^{\text{loc},i,c}_{t}=\begin{cases}1 & a_c \ge a_{\text{active}}\\ 0 & \text{otherwise}\end{cases},
+       \qquad a_{\text{active}} = \text{Gaussian}\!\left(\tfrac{\delta\varphi\cdot 2}{2\sqrt{3}}\right) $$
+  </div>
+  <div class="callout note">
+    <span class="label">A subtlety worth knowing</span>
+    <p style="margin:.3rem 0 0">With a <em>single</em> bump, \(\sigma\) drops out of <em>which</em> cells turn on:
+    the threshold is just "distance \(\le \delta\varphi/\sqrt3\)", so \(\delta\varphi\) alone controls sparsity.
+    \(\sigma\) only shapes the colourful gradient you see, and starts to matter once a module holds a
+    <em>union</em> of several bumps (Eq.&nbsp;12, \(a_c = 1-\prod_b(1-a_{c,b})\)). This demo shows one bump per
+    module, as you asked — but the same machinery represents uncertainty as a union. The paper's baselines are
+    \(\sigma=0.18172\), \(\delta\varphi=\tfrac13\), and \(6\times 6\) cells, which lights up 4–7 cells per bump.</p>
+  </div>
+
+  <!-- ============================================================= -->
+  <h2 id="why"><span class="num">6</span>Why this representation is so good</h2>
+  <ul>
+    <li><strong>Exponential capacity for free.</strong> If module \(i\) resolves \(k_i\) locations, the population
+      resolves \(\prod_i k_i\). Ten modules of 25 locations each give \(25^{10}\approx 10^{14}\) codes — the paper's own
+      example. Reading takes a fixed number of cells; capacity explodes with module count.</li>
+    <li><strong>Uniqueness from ambiguity.</strong> Each module is deliberately ambiguous (it wraps). Disambiguation is
+      an <em>emergent</em> property of reading several at once — no module needs to be big or precise.</li>
+    <li><strong>Path integration is built in.</strong> Because phase updates linearly with movement (Eq.&nbsp;4), the
+      code at a location is the same no matter how you got there. Sensed landmarks "re-anchor" the bumps to cancel the
+      drift that real path integration accumulates.</li>
+    <li><strong>One map, reused everywhere.</strong> A module's manifold of phases is fixed. Entering a new object or
+      environment just picks a new <em>random</em> starting bump (your 🎲 New seed), which instantiates a fresh,
+      private location space — learned once, reused forever.</li>
+    <li><strong>It's an SDR.</strong> Sparse, distributed, high-dimensional — so it inherits HTM's robustness: huge
+      union capacity and a vanishingly small chance of false matches.</li>
+  </ul>
+
+  <!-- ============================================================= -->
+  <h2 id="tryit"><span class="num">7</span>Things to try</h2>
+  <ol>
+    <li><strong>See the aliasing.</strong> In the "Where else…" map, untick modules 2 and 3 so only module&nbsp;1
+      contributes. The matching spots form a lattice — module&nbsp;1 genuinely cannot tell those places apart. Re-tick
+      the others and watch them collapse to one.</li>
+    <li><strong>Feel the scale.</strong> Drag module&nbsp;1's <em>scale</em> up and down. Its arena lattice spreads or
+      tightens, and its bump moves slower or faster for the same step — a coarse vs. fine ruler.</li>
+    <li><strong>Path independence.</strong> Note the final SDR, take a long detour with the arrows, then return to the
+      same spot. Identical code. (The recenter button and a fixed seed make this exact.)</li>
+    <li><strong>Crank the resolution.</strong> Lower a module's \(\delta\varphi\): fewer cells fire (sparser), and its
+      "distinguishable phases" count climbs — at the cost of needing finer movement to stay anchored.</li>
+    <li><strong>New environment.</strong> Hit 🎲. The sensor hasn't moved, but every module re-anchors to a random
+      bump, so the whole location code changes — a different, private map for a different place.</li>
+  </ol>
+
+  <!-- ============================================================= -->
+  <h2 id="refs"><span class="num">8</span>Notes &amp; references</h2>
+  <ul>
+    <li>Lewis, M., Purdy, S., Ahmad, S., &amp; Hawkins, J. (2019). <em>Locations in the Neocortex: A Theory of
+      Sensorimotor Object Recognition Using Cortical Grid Cells.</em> Frontiers in Neural Circuits 13:22.
+      <a href="https://doi.org/10.3389/fncir.2019.00022" target="_blank" rel="noopener">doi:10.3389/fncir.2019.00022</a>
+      (open access).</li>
+    <li>Reference implementation: <a href="https://github.com/numenta/htmresearch/blob/master/htmresearch/algorithms/location_modules.py" target="_blank" rel="noopener"><code class="inline">location_modules.py</code></a>
+      in Numenta's <code class="inline">htmresearch</code>. The demo follows its <code class="inline">activationsForPhase</code>
+      / threshold logic (Eqs. 10–14) and movement update (Eqs. 3–5).</li>
+    <li>This is a faithful but <em>simplified</em> illustration: one bump per module (no unions), no sensory layer, and
+      phase computed in closed form from position. It is built to convey intuition, not to reproduce simulation
+      results.</li>
+    <li>Figure&nbsp;1 is reproduced from the paper (CC&nbsp;BY 4.0). All other graphics are original to this page.</li>
+  </ul>
+
+  <footer>
+    <p>An interactive review/demo · companion to the <a href="../index.html">paper-reviews</a> collection ·
+      math by <a href="https://katex.org" target="_blank" rel="noopener">KaTeX</a>.</p>
+    <p class="backlink"><a href="../index.html">← Back to all paper reviews</a></p>
+  </footer>
+</div>
+
+<script>
+/* =====================================================================
+   Grid Cell Modules — interactive demo
+   Faithful to Lewis, Purdy, Ahmad & Hawkins (2019), Eqs. 3-5 and 10-14.
+   One bump per module; phase computed in closed form from sensor position.
+   ===================================================================== */
+(function(){
+  "use strict";
+
+  /* ---------- small math / util helpers ---------- */
+  const TAU = Math.PI*2, DEG = Math.PI/180, SQRT3 = Math.sqrt(3);
+  const clamp = (v,a,b)=>Math.max(a,Math.min(b,v));
+
+  // seeded PRNG (mulberry32) so a "seed" is reproducible
+  function mulberry32(a){
+    return function(){
+      a |= 0; a = (a + 0x6D2B79F5)|0;
+      let t = Math.imul(a ^ (a>>>15), 1 | a);
+      t = (t + Math.imul(t ^ (t>>>7), 61 | t)) ^ t;
+      return ((t ^ (t>>>14)) >>> 0) / 4294967296;
+    };
+  }
+
+  // 2x2 inverse: m = [[a,b],[c,d]] -> inverse
+  function inv2(a,b,c,d){
+    const det = a*d - b*c;
+    return [d/det, -b/det, -c/det, a/det]; // [a',b',c',d']
+  }
+
+  // module transform M (Eq. 3): columns are lattice basis vectors v1,v2 of length s, 60deg apart
+  function moduleM(scale, thetaDeg){
+    const th = thetaDeg*DEG;
+    const a = scale*Math.cos(th),        b = scale*Math.cos(th + 60*DEG);
+    const c = scale*Math.sin(th),        d = scale*Math.sin(th + 60*DEG);
+    const M = inv2(a,b,c,d);            // M = [[a,b],[c,d]]^-1
+    return { M, v1:[a,c], v2:[b,d] };  // basis vectors (columns of M^-1) for the arena lattice overlay
+  }
+
+  // phase of a module at world position pos, given random anchor (Eq.4 closed form)
+  // phase = (anchor + M*(pos - center)) mod 1 ; center = (0.5,0.5)
+  function phaseAt(mod, px, py){
+    const dx = px - 0.5, dy = py - 0.5;
+    const M = mod.M;
+    let p1 = mod.anchor[0] + (M[0]*dx + M[1]*dy);
+    let p2 = mod.anchor[1] + (M[2]*dx + M[3]*dy);
+    p1 -= Math.floor(p1); p2 -= Math.floor(p2);   // mod 1
+    return [p1, p2];
+  }
+
+  // embed a phase (p1,p2) into rhombus physical coords (60deg basis, unit edge)
+  function embed(p1, p2){ return [p1 + 0.5*p2, (SQRT3/2)*p2]; }
+
+  // shortest toroidal distance between two phases, measured on the rhombus
+  function phaseDist(a1,a2, b1,b2){
+    let d1 = a1-b1, d2 = a2-b2;
+    let best = Infinity;
+    for(let i=-1;i<=1;i++){
+      for(let j=-1;j<=1;j++){
+        const e1 = (d1+i) + 0.5*(d2+j);
+        const e2 = (SQRT3/2)*(d2+j);
+        const r = e1*e1 + e2*e2;
+        if(r<best) best = r;
+      }
+    }
+    return Math.sqrt(best);
+  }
+
+  // colourful "turbo-ish" colormap, v in [0,1] -> [r,g,b]
+  const CMAP = [
+    [0.00, 0x0b,0x0b,0x3b],
+    [0.18, 0x2c,0x3a,0x9e],
+    [0.36, 0x1f,0x9b,0xb5],
+    [0.55, 0x36,0xc4,0x6a],
+    [0.72, 0xcd,0xe8,0x4a],
+    [0.86, 0xf6,0xa1,0x3a],
+    [1.00, 0xe6,0x32,0x32]
+  ];
+  function heat(v){
+    v = clamp(v,0,1);
+    for(let k=1;k<CMAP.length;k++){
+      if(v<=CMAP[k][0]){
+        const a=CMAP[k-1], b=CMAP[k];
+        const t=(v-a[0])/(b[0]-a[0]);
+        return [a[1]+(b[1]-a[1])*t, a[2]+(b[2]-a[2])*t, a[3]+(b[3]-a[3])*t];
+      }
+    }
+    const z=CMAP[CMAP.length-1]; return [z[1],z[2],z[3]];
+  }
+
+  /* ---------- crisp canvases on HiDPI ---------- */
+  // Draw in fixed "logical" coordinates; back the canvas at logical*DPR so it
+  // stays sharp on Retina displays. All draw code uses logical units.
+  const DPR = Math.min(window.devicePixelRatio || 1, 2.5);
+  function fitCanvas(cv, lw, lh){
+    const bw = Math.round(lw*DPR), bh = Math.round(lh*DPR);
+    if(cv.width !== bw || cv.height !== bh){ cv.width = bw; cv.height = bh; }
+    const ctx = cv.getContext('2d');
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    return ctx;
+  }
+  // reusable offscreen buffer for the per-pixel Gaussian field (logical 300x200)
+  const heatBuf = document.createElement('canvas');
+  heatBuf.width = 300; heatBuf.height = 200;
+  const heatCtx = heatBuf.getContext('2d');
+
+  /* ---------- state ---------- */
+  const COLORS = [
+    {base:'#10b981', dark:'#047857', soft:'#e7f8f1'},
+    {base:'#f43f5e', dark:'#be123c', soft:'#fdeaee'},
+    {base:'#6366f1', dark:'#4338ca', soft:'#eaecfd'}
+  ];
+  const state = {
+    seed: 1234,
+    mouse: {x:0.5, y:0.5},
+    trail: [],
+    step: 0.03,
+    sigma: 0.18,
+    modules: [
+      {scale:0.42, theta:8,  w:6, dphi:0.33, enabled:true,  showLattice:true},
+      {scale:0.30, theta:28, w:7, dphi:0.30, enabled:true,  showLattice:false},
+      {scale:0.48, theta:48, w:8, dphi:0.28, enabled:true,  showLattice:false}
+    ]
+  };
+
+  // derived per-module geometry + random anchors set from seed
+  function rebuildModules(){
+    const rng = mulberry32(state.seed>>>0);
+    // advance a little so consecutive seeds look different
+    rng(); rng();
+    state.modules.forEach((m,i)=>{
+      const g = moduleM(m.scale, m.theta);
+      m.M = g.M; m.v1 = g.v1; m.v2 = g.v2;
+      m.color = COLORS[i];
+      m.anchor = [rng(), rng()];
+      // precompute cell phases (centres of w x w tiles)
+      const cells = [];
+      for(let r=0;r<m.w;r++) for(let c=0;c<m.w;c++){
+        cells.push([ (c+0.5)/m.w, (r+0.5)/m.w ]);
+      }
+      m.cells = cells;
+      m.thr = m.dphi/SQRT3;          // active iff phaseDist <= thr  (Eq.13-14, single bump)
+    });
+  }
+  // refresh only geometry that depends on scale/theta/w/dphi (keep anchors)
+  function refreshGeom(){
+    state.modules.forEach((m,i)=>{
+      const g = moduleM(m.scale, m.theta);
+      m.M = g.M; m.v1 = g.v1; m.v2 = g.v2;
+      const cells = [];
+      for(let r=0;r<m.w;r++) for(let c=0;c<m.w;c++) cells.push([ (c+0.5)/m.w, (r+0.5)/m.w ]);
+      m.cells = cells;
+      m.thr = m.dphi/SQRT3;
+    });
+  }
+
+  // active-cell boolean array for a module at a given phase
+  function activeAt(m, ph1, ph2){
+    const out = new Uint8Array(m.cells.length);
+    for(let k=0;k<m.cells.length;k++){
+      const cp = m.cells[k];
+      out[k] = (phaseDist(cp[0],cp[1], ph1,ph2) <= m.thr) ? 1 : 0;
+    }
+    return out;
+  }
+  // compact bitmask (Uint32Array) of active cells for fast comparison
+  function maskAt(m, ph1, ph2){
+    const n = m.cells.length, words = (n+31)>>5;
+    const out = new Uint32Array(words);
+    for(let k=0;k<n;k++){
+      if(phaseDist(m.cells[k][0],m.cells[k][1], ph1,ph2) <= m.thr){
+        out[k>>5] |= (1 << (k & 31));
+      }
+    }
+    return out;
+  }
+  function maskEq(a,b){
+    if(a.length!==b.length) return false;
+    for(let i=0;i<a.length;i++) if(a[i]!==b[i]) return false;
+    return true;
+  }
+
+  /* ---------- DOM build: module cards ---------- */
+  const modulesCol = document.getElementById('modulesCol');
+  const cards = [];
+  function buildCards(){
+    modulesCol.innerHTML='';
+    state.modules.forEach((m,i)=>{
+      const card = document.createElement('details');
+      card.className='modcard'; card.open = (m.collapsed!==true);
+      card.innerHTML = `
+        <summary><span class="dot" style="background:${m.color.base}"></span> Module ${i+1}<span class="msum"></span></summary>
+        <div class="modbody">
+        <div class="modtoggles">
+          <label><input type="checkbox" class="en" ${m.enabled?'checked':''}> include in code</label>
+          <label><input type="checkbox" class="lat" ${m.showLattice?'checked':''}> show lattice in arena</label>
+        </div>
+        <div class="ctrls">
+          <label>scale <span class="v" data-v="scale">${m.scale.toFixed(2)}</span>
+            <input type="range" class="r" data-p="scale" min="0.05" max="0.5" step="0.01" value="${m.scale}"></label>
+          <label>orientation <span class="v" data-v="theta">${m.theta}°</span>
+            <input type="range" class="r" data-p="theta" min="0" max="59" step="1" value="${m.theta}"></label>
+          <label>cells (w×w) <span class="v" data-v="w">${m.w}×${m.w} = ${m.w*m.w}</span>
+            <input type="range" class="r" data-p="w" min="4" max="14" step="1" value="${m.w}"></label>
+          <label>readout δφ <span class="v" data-v="dphi">${m.dphi.toFixed(2)}</span>
+            <input type="range" class="r" data-p="dphi" min="0.14" max="0.5" step="0.01" value="${m.dphi}"></label>
+        </div>
+        <div class="mod-viz">
+          <div class="viz-block">
+            <div class="lab">Gaussian bump · rhombus</div>
+            <canvas class="rhombus-c" width="300" height="200" role="img"
+              aria-label="Module rhombus showing the Gaussian activity bump; active cells are outlined. The phase and active-cell count are reported in the readout below."></canvas>
+          </div>
+          <div class="viz-block">
+            <div class="lab">SDR · sorted cells</div>
+            <div class="sdrgrid"></div>
+          </div>
+        </div>
+        <div class="readout"></div>
+        </div>
+      `;
+      modulesCol.appendChild(card);
+
+      const refs = {
+        card,
+        msum: card.querySelector('.msum'),
+        en: card.querySelector('.en'),
+        lat: card.querySelector('.lat'),
+        ranges: card.querySelectorAll('.r'),
+        vals: {
+          scale: card.querySelector('[data-v=scale]'),
+          theta: card.querySelector('[data-v=theta]'),
+          w: card.querySelector('[data-v=w]'),
+          dphi: card.querySelector('[data-v=dphi]')
+        },
+        rh: card.querySelector('.rhombus-c'),
+        sdr: card.querySelector('.sdrgrid'),
+        readout: card.querySelector('.readout'),
+        bits: []
+      };
+      cards.push(refs);
+
+      refs.en.addEventListener('change', ()=>{ m.enabled = refs.en.checked; renderAll(); });
+      refs.lat.addEventListener('change', ()=>{ m.showLattice = refs.lat.checked; drawArena(); buildArenaLegend(); });
+      // redraw the (now-visible) canvas when the card is expanded
+      card.addEventListener('toggle', ()=>{ m.collapsed = !card.open; if(card.open) renderAll(); });
+
+      refs.ranges.forEach(rg=>{
+        rg.addEventListener('input', ()=>{
+          const p = rg.dataset.p;
+          let val = parseFloat(rg.value);
+          if(p==='w') val = Math.round(val);
+          m[p] = val;
+          // update label
+          if(p==='scale') refs.vals.scale.textContent = val.toFixed(2);
+          if(p==='theta') refs.vals.theta.textContent = val+'°';
+          if(p==='w'){ refs.vals.w.textContent = `${val}×${val} = ${val*val}`; buildSDRGrid(refs, m); }
+          if(p==='dphi') refs.vals.dphi.textContent = val.toFixed(2);
+          refreshGeom();
+          renderAll();
+        });
+      });
+
+      buildSDRGrid(refs, m);
+    });
+  }
+
+  function buildSDRGrid(refs, m){
+    refs.sdr.style.gridTemplateColumns = `repeat(${m.w}, 1fr)`;
+    refs.sdr.innerHTML='';
+    refs.bits=[];
+    for(let k=0;k<m.w*m.w;k++){
+      const b=document.createElement('div'); b.className='bit';
+      refs.sdr.appendChild(b); refs.bits.push(b);
+    }
+  }
+
+  /* ---------- rhombus rendering ---------- */
+  function drawRhombus(refs, m, ph, act){
+    const cv = refs.rh;
+    const W = 300, H = 200, pad = 14;          // logical drawing units
+    const ctx = fitCanvas(cv, W, H);
+    const exMax = 1.5, eyMax = SQRT3/2;
+    const scl = Math.min((W-2*pad)/exMax, (H-2*pad)/eyMax);
+    const ox = (W - exMax*scl)/2, oy = (H - eyMax*scl)/2;
+    const toCanvas = (e1,e2)=>[ ox + e1*scl, H - oy - e2*scl ];
+
+    const sig = state.sigma, twoSig2 = 2*sig*sig;
+
+    // heat field — render the per-pixel Gaussian into the logical-size offscreen
+    // buffer (putImageData ignores the DPR transform), then drawImage it crisply.
+    const img = heatCtx.createImageData(W,H);
+    const data = img.data;
+    for(let py=0; py<H; py++){
+      for(let px=0; px<W; px++){
+        const e1 = (px - ox)/scl;
+        const e2 = (H - oy - py)/scl;
+        // invert embed: p2 = e2/(sqrt3/2); p1 = e1 - 0.5 p2
+        const p2 = e2/(SQRT3/2);
+        const p1 = e1 - 0.5*p2;
+        const idx = (py*W+px)*4;
+        if(p1>=0 && p1<1 && p2>=0 && p2<1){
+          const d = phaseDist(p1,p2, ph[0],ph[1]);
+          const v = Math.exp(-(d*d)/twoSig2);
+          const rgb = heat(v);
+          data[idx]=rgb[0]; data[idx+1]=rgb[1]; data[idx+2]=rgb[2]; data[idx+3]=255;
+        } else {
+          data[idx+3]=0;
+        }
+      }
+    }
+    heatCtx.putImageData(img,0,0);
+    ctx.clearRect(0,0,W,H);
+    ctx.drawImage(heatBuf, 0,0, W,H);
+
+    // cell grid lines (faint)
+    ctx.lineWidth=1; ctx.strokeStyle='rgba(255,255,255,0.18)';
+    for(let i=0;i<=m.w;i++){
+      const t=i/m.w;
+      let a=toCanvas(...embed(t,0)), b=toCanvas(...embed(t,1));
+      ctx.beginPath(); ctx.moveTo(a[0],a[1]); ctx.lineTo(b[0],b[1]); ctx.stroke();
+      a=toCanvas(...embed(0,t)); b=toCanvas(...embed(1,t));
+      ctx.beginPath(); ctx.moveTo(a[0],a[1]); ctx.lineTo(b[0],b[1]); ctx.stroke();
+    }
+
+    // outline active cells
+    ctx.lineWidth=2; ctx.strokeStyle='rgba(255,255,255,0.95)';
+    for(let r=0;r<m.w;r++){
+      for(let c=0;c<m.w;c++){
+        if(!act[r*m.w+c]) continue;
+        const c0=(c)/m.w, c1=(c+1)/m.w, r0=(r)/m.w, r1=(r+1)/m.w;
+        const p00=toCanvas(...embed(c0,r0)), p10=toCanvas(...embed(c1,r0));
+        const p11=toCanvas(...embed(c1,r1)), p01=toCanvas(...embed(c0,r1));
+        ctx.beginPath(); ctx.moveTo(p00[0],p00[1]); ctx.lineTo(p10[0],p10[1]);
+        ctx.lineTo(p11[0],p11[1]); ctx.lineTo(p01[0],p01[1]); ctx.closePath(); ctx.stroke();
+      }
+    }
+
+    // rhombus border
+    ctx.lineWidth=1.5; ctx.strokeStyle=m.color.dark;
+    const c0=toCanvas(...embed(0,0)), c1=toCanvas(...embed(1,0)), c2=toCanvas(...embed(1,1)), c3=toCanvas(...embed(0,1));
+    ctx.beginPath(); ctx.moveTo(c0[0],c0[1]); ctx.lineTo(c1[0],c1[1]); ctx.lineTo(c2[0],c2[1]); ctx.lineTo(c3[0],c3[1]); ctx.closePath(); ctx.stroke();
+
+    // bump marker
+    const bc = toCanvas(...embed(ph[0],ph[1]));
+    ctx.beginPath(); ctx.arc(bc[0],bc[1],5,0,TAU); ctx.fillStyle='#fff'; ctx.fill();
+    ctx.lineWidth=2; ctx.strokeStyle='#1c1530'; ctx.stroke();
+
+    return act;
+  }
+
+  /* ---------- SDR grid update ---------- */
+  function updateSDR(refs, m, act){
+    // Cell (r,c) has phase p2=(r+0.5)/w, and the rhombus draws higher p2 higher up,
+    // but a CSS grid fills row 0 at the TOP. Flip the row so the SDR's vertical
+    // direction matches the bump (top row = top of the rhombus).
+    const w=m.w;
+    for(let r=0;r<w;r++){
+      for(let c=0;c<w;c++){
+        const on = act[r*w+c]===1;
+        const dom = (w-1-r)*w + c;
+        refs.bits[dom].style.background = on ? m.color.base : '#ece9f5';
+      }
+    }
+  }
+
+  /* ---------- arena ---------- */
+  const arena = document.getElementById('arena');
+  function drawArena(){
+    const W=600, H=600, pad=24;            // logical units
+    const actx = fitCanvas(arena, W, H);
+    actx.clearRect(0,0,W,H);
+    // background
+    actx.fillStyle='#fbfaff'; actx.fillRect(0,0,W,H);
+    // border
+    actx.lineWidth=2; actx.strokeStyle='#e5ddf4';
+    actx.strokeRect(pad,pad,W-2*pad,H-2*pad);
+
+    const toPx = (x,y)=>[ pad + x*(W-2*pad), H - pad - y*(H-2*pad) ];
+
+    // lattice overlays
+    state.modules.forEach((m)=>{
+      if(!m.showLattice || !m.enabled) return;
+      const v1=m.v1, v2=m.v2;
+      actx.fillStyle = m.color.dark;       // darker than the base tint so dots read clearly
+      // cover the whole arena regardless of scale: small scale needs many steps,
+      // large scale only a few. The hexagonal lattice always yields >=7 dots at the max scale.
+      const R = Math.min(40, Math.ceil(0.8/Math.max(m.scale,1e-3)) + 1);
+      for(let i=-R;i<=R;i++){
+        for(let j=-R;j<=R;j++){
+          const wx = 0.5 + i*v1[0] + j*v2[0];
+          const wy = 0.5 + i*v1[1] + j*v2[1];
+          if(wx<0||wx>1||wy<0||wy>1) continue;
+          const p=toPx(wx,wy);
+          // subtle white halo so dots pop against the trail and border
+          actx.globalAlpha=0.9;
+          actx.lineWidth=1.5; actx.strokeStyle='rgba(255,255,255,0.85)';
+          actx.beginPath(); actx.arc(p[0],p[1],6,0,TAU); actx.fill(); actx.stroke();
+        }
+      }
+      actx.globalAlpha=1;
+    });
+
+    // trail
+    if(state.trail.length>1){
+      actx.strokeStyle='rgba(124,58,237,0.35)'; actx.lineWidth=2;
+      actx.beginPath();
+      state.trail.forEach((t,k)=>{ const p=toPx(t.x,t.y); k? actx.lineTo(p[0],p[1]):actx.moveTo(p[0],p[1]); });
+      actx.stroke();
+    }
+
+    // mouse
+    const mp=toPx(state.mouse.x, state.mouse.y);
+    actx.beginPath(); actx.arc(mp[0],mp[1],9,0,TAU);
+    actx.fillStyle='#1c1530'; actx.fill();
+    actx.beginPath(); actx.arc(mp[0]-3,mp[1]-3,3,0,TAU); actx.fillStyle='#fff'; actx.fill();
+    // little ears
+    actx.fillStyle='#1c1530';
+    actx.beginPath(); actx.arc(mp[0]-7,mp[1]-9,4,0,TAU); actx.fill();
+    actx.beginPath(); actx.arc(mp[0]+7,mp[1]-9,4,0,TAU); actx.fill();
+  }
+
+  function buildArenaLegend(){
+    const el=document.getElementById('arenaLegend');
+    let html = '<span><span class="sw" style="background:#1c1530;border-radius:50%"></span> sensor</span>';
+    state.modules.forEach((m,i)=>{
+      if(m.showLattice && m.enabled)
+        html += `<span><span class="sw" style="background:${m.color.dark};border-radius:50%"></span> module ${i+1} lattice</span>`;
+    });
+    el.innerHTML = html;
+  }
+
+  /* ---------- uniqueness map ---------- */
+  const uniq = document.getElementById('uniq');
+  let uniqTimer=null;
+  function scheduleUniq(){
+    if(uniqTimer) clearTimeout(uniqTimer);
+    uniqTimer = setTimeout(drawUniq, 70);
+  }
+  function drawUniq(){
+    const W=600, H=600, pad=24;            // logical units
+    const uctx = fitCanvas(uniq, W, H);
+    const N=80; // scan resolution
+    const enabled = state.modules.filter(m=>m.enabled);
+    // current signature (masks per enabled module at mouse)
+    const cur = enabled.map(m=>{ const ph=phaseAt(m,state.mouse.x,state.mouse.y); return maskAt(m,ph[0],ph[1]); });
+
+    uctx.clearRect(0,0,W,H);
+    uctx.fillStyle='#fbfaff'; uctx.fillRect(0,0,W,H);
+
+    const x0=pad, y0=pad, ww=W-2*pad, hh=H-2*pad;
+    const cellW = ww/N, cellH = hh/N;
+    let matches=0;
+    for(let iy=0; iy<N; iy++){
+      for(let ix=0; ix<N; ix++){
+        const wx = (ix+0.5)/N, wy = (iy+0.5)/N;
+        let ok = enabled.length>0;
+        for(let e=0;e<enabled.length;e++){
+          const m=enabled[e]; const ph=phaseAt(m,wx,wy);
+          const msk=maskAt(m,ph[0],ph[1]);
+          if(!maskEq(msk,cur[e])){ ok=false; break; }
+        }
+        if(ok){
+          matches++;
+          uctx.fillStyle='rgba(124,58,237,0.85)';
+          const cx = x0 + wx*ww - cellW/2;
+          const cy = y0 + (1-wy)*hh - cellH/2;
+          uctx.fillRect(cx, cy, cellW+0.6, cellH+0.6);
+        }
+      }
+    }
+    // border
+    uctx.lineWidth=2; uctx.strokeStyle='#e5ddf4'; uctx.strokeRect(pad,pad,ww,hh);
+    // mouse
+    const mpx = x0 + state.mouse.x*ww, mpy = y0 + (1-state.mouse.y)*hh;
+    uctx.beginPath(); uctx.arc(mpx,mpy,7,0,TAU); uctx.fillStyle='#1c1530'; uctx.fill();
+    uctx.lineWidth=2; uctx.strokeStyle='#fff'; uctx.stroke();
+
+    // estimate distinct clusters via match fraction
+    const frac = matches/(N*N);
+    const ro = document.getElementById('uniqReadout');
+    const nMods = enabled.length;
+    if(nMods===0){
+      ro.innerHTML = 'No modules included — nothing to match.';
+    } else {
+      const approxSpots = Math.max(1, Math.round(frac*N*N));
+      ro.innerHTML = `<b>${(frac*100).toFixed(1)}%</b> of sampled arena spots share this exact code `+
+        `(${nMods} module${nMods>1?'s':''} active). `+
+        (frac>0.06 ? 'Many aliases — add modules to disambiguate.' :
+         (matches<=Math.ceil((N*N)*0.01) ? 'Essentially unique. 🎯' : 'Nearly unique.'));
+    }
+  }
+
+  /* ---------- final SDR ---------- */
+  const finalStrip = document.getElementById('finalStrip');
+  const finalStats = document.getElementById('finalStats');
+  function renderFinal(perModuleAct){
+    finalStrip.innerHTML='';
+    let totalBits=0, activeBits=0, capacity=1, anyEnabled=false;
+    state.modules.forEach((m,i)=>{
+      if(!m.enabled) return;
+      // separator goes BEFORE each rendered group except the first, so disabling
+      // a trailing module never leaves a dangling divider
+      if(anyEnabled){ const sp=document.createElement('div'); sp.className='sep'; finalStrip.appendChild(sp); }
+      anyEnabled=true;
+      const grp=document.createElement('div'); grp.className='mgroup';
+      const lab=document.createElement('div'); lab.className='mlab';
+      lab.style.color=m.color.dark; lab.textContent=`M${i+1}`;
+      const grid=document.createElement('div'); grid.className='grid';
+      grid.style.gridTemplateColumns=`repeat(${m.w}, 9px)`;
+      const act=perModuleAct[i];
+      let aOn=0;
+      // flip rows so the strip matches the rhombus/SDR vertical orientation
+      for(let dr=0; dr<m.w; dr++){
+        const r=m.w-1-dr;
+        for(let c=0;c<m.w;c++){
+          const b=document.createElement('div'); b.className='b';
+          if(act[r*m.w+c]){ b.style.background=m.color.base; aOn++; }
+          grid.appendChild(b);
+        }
+      }
+      grp.appendChild(lab); grp.appendChild(grid);
+      finalStrip.appendChild(grp);
+      totalBits += m.w*m.w; activeBits += aOn;
+      capacity *= Math.max(1, Math.round(1/(m.dphi*m.dphi)));
+    });
+    if(!anyEnabled){ finalStrip.innerHTML='<span class="small">Enable at least one module.</span>'; }
+
+    const spars = totalBits? (100*activeBits/totalBits):0;
+    const capStr = capacity>=1e6 ? capacity.toExponential(2).replace('e+','×10^') : capacity.toLocaleString();
+    finalStats.innerHTML =
+      `<div class="stat"><b>${totalBits}</b> total bits</div>`+
+      `<div class="stat"><b>${activeBits}</b> active bits</div>`+
+      `<div class="stat"><b>${spars.toFixed(1)}%</b> sparsity</div>`+
+      `<div class="stat" title="product of (1/δφ)^2 over modules">≈ distinguishable locations<b>${capStr}</b></div>`;
+  }
+
+  /* ---------- master render ---------- */
+  function renderAll(){
+    const perModuleAct=[];
+    state.modules.forEach((m,i)=>{
+      const refs=cards[i];
+      const ph = phaseAt(m, state.mouse.x, state.mouse.y);
+      const act = activeAt(m, ph[0], ph[1]);     // always computed (final SDR + uniqueness need it)
+      perModuleAct[i]=act;
+      let on=0; for(let k=0;k<act.length;k++) on+=act[k];
+      const kk = Math.max(1, Math.round(1/(m.dphi*m.dphi)));
+      // compact status, always visible in the summary (even when collapsed)
+      refs.msum.textContent = `s ${m.scale.toFixed(2)} · ${m.w}×${m.w} · ${on} on`+(m.enabled?'':' · off');
+      // the expensive per-pixel render only runs when the card is expanded
+      if(refs.card.open){
+        drawRhombus(refs, m, ph, act);
+        updateSDR(refs, m, act);
+        refs.readout.innerHTML =
+          `phase (<b>${ph[0].toFixed(2)}</b>, <b>${ph[1].toFixed(2)}</b>) · `+
+          `<b>${on}</b>/${m.w*m.w} cells on · ~<b>${kk}×${kk}</b> distinguishable phases`+
+          (m.enabled?'':' · <span style="color:#be123c">excluded</span>');
+      }
+      // dim excluded cards
+      refs.card.style.opacity = m.enabled? '1':'0.55';
+    });
+    drawArena();
+    renderFinal(perModuleAct);
+    scheduleUniq();
+  }
+
+  /* ---------- movement ---------- */
+  function pushTrail(){
+    state.trail.push({x:state.mouse.x, y:state.mouse.y});
+    if(state.trail.length>240) state.trail.shift();
+  }
+  function move(dir){
+    const s=state.step;
+    let {x,y}=state.mouse;
+    if(dir==='N') y+=s; if(dir==='S') y-=s;
+    if(dir==='E') x+=s; if(dir==='W') x-=s;
+    state.mouse.x=clamp(x,0,1); state.mouse.y=clamp(y,0,1);
+    pushTrail();
+    renderAll();
+  }
+  function moveTo(x,y){
+    state.mouse.x=clamp(x,0,1); state.mouse.y=clamp(y,0,1);
+    pushTrail(); renderAll();
+  }
+
+  /* ---------- wire up controls ---------- */
+  document.querySelectorAll('.dpad button[data-dir]').forEach(b=>{
+    b.addEventListener('click', ()=>move(b.dataset.dir));
+  });
+  // arena click-to-move
+  arena.addEventListener('pointerdown', (e)=>{
+    const rect=arena.getBoundingClientRect();
+    const pad=24, W=600, H=600;            // logical units
+    const sx=W/rect.width, sy=H/rect.height;
+    const cx=(e.clientX-rect.left)*sx, cy=(e.clientY-rect.top)*sy;
+    const x=(cx-pad)/(W-2*pad), y=1-(cy-pad)/(H-2*pad);
+    moveTo(x,y);
+  });
+  // keyboard
+  window.addEventListener('keydown',(e)=>{
+    const k=e.key.toLowerCase();
+    let dir=null;
+    if(k==='arrowup'||k==='w') dir='N';
+    else if(k==='arrowdown'||k==='s') dir='S';
+    else if(k==='arrowleft'||k==='a') dir='W';
+    else if(k==='arrowright'||k==='d') dir='E';
+    if(dir){
+      // don't steal keys while typing in a control
+      const tag=(document.activeElement&&document.activeElement.tagName)||'';
+      if(tag==='INPUT'||tag==='TEXTAREA') return;
+      // only hijack keys when the arena is actually on screen, so page scrolling
+      // with the arrow keys still works when the demo is scrolled out of view
+      const r=arena.getBoundingClientRect();
+      const vh=window.innerHeight||document.documentElement.clientHeight;
+      if(r.bottom<0 || r.top>vh) return;
+      e.preventDefault(); move(dir);
+    }
+  });
+
+  document.getElementById('newseed').addEventListener('click', ()=>{
+    state.seed = (Math.floor(performance.now()*1000)%900000)+1000;
+    rebuildModules();
+    document.getElementById('seedval').textContent = state.seed;
+    renderAll();
+  });
+  document.getElementById('recenter').addEventListener('click', ()=>{
+    state.mouse={x:0.5,y:0.5}; state.trail=[]; renderAll();
+  });
+  const collapseBtn=document.getElementById('collapseAll');
+  collapseBtn.addEventListener('click', ()=>{
+    const anyOpen = cards.some(r=>r.card.open);
+    cards.forEach(r=>{ r.card.open = !anyOpen; });   // toggle events refresh canvases on expand
+    collapseBtn.textContent = anyOpen ? '⊞ Expand modules' : '⊟ Collapse modules';
+  });
+  const stepEl=document.getElementById('step'), stepV=document.getElementById('stepv');
+  stepEl.addEventListener('input',()=>{ state.step=parseFloat(stepEl.value); stepV.textContent=state.step.toFixed(3); });
+  const sigEl=document.getElementById('sigma'), sigV=document.getElementById('sigmav');
+  sigEl.addEventListener('input',()=>{ state.sigma=parseFloat(sigEl.value); sigV.textContent=state.sigma.toFixed(3); renderAll(); });
+
+  /* ---------- init ---------- */
+  function init(){
+    rebuildModules();
+    buildCards();
+    buildArenaLegend();
+    document.getElementById('seedval').textContent = state.seed;
+    renderAll();
+  }
+  init();
+
+  /* ---------- KaTeX auto-render (poll for late CDN/fallback) ---------- */
+  function renderMath(attempt){
+    if (typeof renderMathInElement === "function") {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "\\[", right: "\\]", display: true},
+          {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false
+      });
+    } else if ((attempt || 0) < 50) {
+      setTimeout(function(){ renderMath((attempt || 0) + 1); }, 100);
+    }
+  }
+  document.addEventListener("DOMContentLoaded", function(){ renderMath(0); });
+  if(document.readyState!=='loading') renderMath(0);
+})();
+</script>
+</body>
+</html>

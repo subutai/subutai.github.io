@@ -85,6 +85,10 @@ const THEMES = [
     "scale1": 70,
     "fig1": {
       "caption": "A cross section of the 6 layers of the neocortex as well as its columnar structure. Source:  Blue Brain Project; http://bluebrain.epfl.ch/"
+    },
+    "note": {
+      "label": "Grid cells in the Thousand Brains Theory",
+      "html": "A core idea in the Thousand Brains Theory is that every cortical column uses grid-cell-like codes — the same machinery the brain uses to navigate physical space — to represent <em>where</em> each feature sits on an object. By combining many of these location signals, a single column can recognize an object through movement and touch alone. We worked this out in our <a href='https://www.frontiersin.org/articles/10.3389/fncir.2019.00022/full' target='_blank' rel='noopener'>Locations paper</a>, and I put together a small interactive demo of how the grid-cell modules encode location: <a href='papers/grid-cell-modules.html' target='_blank' rel='noopener'>explore the grid-cell module demo →</a>"
     }
   },
   {

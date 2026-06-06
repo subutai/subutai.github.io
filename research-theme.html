@@ -254,6 +254,26 @@
   a.pub-link:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
   .pub-link.placeholder { border-style: dashed; color: #b1a78f; background: transparent; cursor: help; }
 
+  /* ── per-theme note / demo callout ──────────────────────────── */
+  .theme-note {
+    margin: 8px 0 4px;
+    padding: 20px 24px;
+    background: var(--accent-light);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+  }
+  .theme-note-label {
+    font-family: 'Nunito', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .theme-note p { margin: 0; }
+  .theme-note a { color: var(--accent); font-weight: 600; }
+
   /* ── publications for theme ─────────────────────────────────── */
   .theme-pubs {
     padding: 36px 0 60px;
@@ -397,6 +417,10 @@
 
   <!-- Image placeholder #2 (supporting image). Auto-swaps to images/research/<slug>-2.jpg when present. -->
   <div class="theme-media" id="theme-fig-2"></div>
+
+  <!-- Optional per-theme note / callout (e.g. an interactive demo). Filled from
+       the theme's `note` in themes.js; stays hidden when a theme has none. -->
+  <div class="theme-note" id="theme-note" hidden></div>
 
   <div class="theme-pubs">
     <h2 class="theme-pubs-label" id="pubs-label">Publications</h2>
@@ -557,6 +581,18 @@ function render() {
     { hint: 'A lead image for this theme — a key figure or a relevant photo.', caption: fig1.caption || '', scale: theme.scale1 ?? fig1.scale });
   renderFigure('theme-fig-2', `images/research/${theme.slug}-2`,
     { hint: 'A second supporting image or diagram.', caption: fig2.caption || '', scale: theme.scale2 ?? fig2.scale });
+
+  // Optional per-theme note / callout (themes.js `note`), shown just before the
+  // publications. `note` may be a plain HTML string or { label, html }.
+  const noteEl = document.getElementById('theme-note');
+  if (theme.note) {
+    const n = typeof theme.note === 'string' ? { html: theme.note } : theme.note;
+    const lbl = n.label ? `<div class="theme-note-label">${n.label}</div>` : '';
+    noteEl.innerHTML = lbl + (n.html || '');
+    noteEl.hidden = false;
+  } else {
+    noteEl.hidden = true;
+  }
 
   // Publications filtered by area, sorted by citation count (most cited first)
   const themePubs = PUBS
